@@ -233,7 +233,8 @@ void IERG3810_TFTLCD_ShowChinese(u16 x, u16 y, u16 color, u16 bgcolor)
 
 u16 IERG3810_TFTLCD_ReadColor(u16 x, u16 y)
 {
-	u16 tmpcolor = 0;
+	/*
+	u16 color = 0;
 	u16 dummy;
 IERG3810_TFTLCD_WrReg(0x2A); // 设置列地址
 IERG3810_TFTLCD_WrData(x >> 8);
@@ -248,5 +249,5 @@ dummy = IERG3810_TFTLCD_RdData(); // 伪读数
 color = IERG3810_TFTLCD_RdData(); // 实际颜色值
 
 return color;
-	
+*/
 }
