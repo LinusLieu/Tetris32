@@ -24,11 +24,21 @@ void Delay(u32 count)
 	for (i=0;i<count;i++);
 }
 
+void IERG3810_SYSTICK_Init10ms(void)
+{
+	SysTick->CTRL = 0;	//clear
+	SysTick->LOAD = 89999;	//What should be filled? Refer to DDI-0337E page 8-10
+	SysTick->VAL = 0;
+	SysTick->CTRL |= 0x00000003;	//What should be filled? set internal clock, use interrupt, start count
+}
+
 int main(void)
 {
 	u8 thread = 0;
 	int i = 0, j = 0;
-
+	DAS = 1.5f;
+	IERG3810_SYSTICK_Init10ms();
+	IERG3810_clock_tree_init();
 
 	block[0][0] = switch_color(1);
 	block[1][0] = switch_color(1);
@@ -51,12 +61,14 @@ int main(void)
 	Playfield[4][18] = switch_color(6);
 	Playfield[3][17] = switch_color(7);
 
-  Delay(12000000);
+  Delay(1000000);
 	Draw_playfield(Playfield);
+		Delay(1000000);
 	Draw_block(block);
 		
 	while(1)
 	{
+		
 		/*
 		switch(thread){
 			case 0:

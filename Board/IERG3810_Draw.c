@@ -65,7 +65,7 @@ void Draw_playfield(u16 playfield[10][24])
 		for(j = 0; j < 24; j++)
 		{
 			color = playfield[i][j];
-			IERG3810_TFTLCD_FillSquare(color, 80+i*8, j*8+64);
+			IERG3810_Draw_DrawSquare(color, 80+i*8, j*8+64);
 		}
 	}
 }
@@ -79,7 +79,8 @@ void Draw_block(u16 block[4][4])
 		for(j = 0; j < 4; j++)
 		{
 			color = block[4][4];
-			IERG3810_TFTLCD_FillSquare(color, 80+i*8, j*8+64-autoDrop);
+			IERG3810_Draw_DrawSquare(color, 80+i*8, (j+autoDrop)*8+64);
+			//autoDrop = 0;
 		}
 	}
 }

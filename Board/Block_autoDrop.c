@@ -1,5 +1,6 @@
 #include "stm32f10x.h"
 #include "Global.h"
+#include "IERG3810_Draw.h"
 
 void Block_autoDrop(void)
 {
@@ -7,5 +8,9 @@ void Block_autoDrop(void)
     {
         autoDrop++;
         DAS_Timer=0;
+        Delay(100000);
+	Draw_playfield(Playfield);
+		Delay(100000);
+	Draw_block(block);
     }
 }
