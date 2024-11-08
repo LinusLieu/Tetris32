@@ -1,5 +1,6 @@
 *.uvprojx
 *.uvoptx
+*.uvguix.*
 /RTE
 /Objects
 /Listings
