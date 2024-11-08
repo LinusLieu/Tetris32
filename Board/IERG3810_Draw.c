@@ -17,6 +17,8 @@ u16 switch_color(u16 type)
 {
 	switch (type)
 	{
+		case 0:
+			return 0XFFFF;
 		case 1:
 			return 0XF800;
 		case 2:
@@ -31,6 +33,8 @@ u16 switch_color(u16 type)
 			return 0X1F;
 		case 7:
 			return 0X8010;
+		default:
+			return 0X8410;
 		
 		
 	}
@@ -64,7 +68,7 @@ void Draw_playfield(u16 playfield[10][24])
 	{
 		for(j = 0; j < 24; j++)
 		{
-			color = playfield[i][j];
+			color = switch_color(playfield[i][j]);
 			IERG3810_Draw_DrawSquare(color, 80+i*8, j*8+64);
 		}
 	}
@@ -78,7 +82,7 @@ void Draw_block(u16 block[4][4])
 	{
 		for(j = 0; j < 4; j++)
 		{
-			color = block[i][j];
+			color = switch_color(block[i][j]);
 			if(!color){color = Playfield[block_pos_x+i][block_pos_y+j];}
 			IERG3810_Draw_DrawSquare(color, 80+(block_pos_x+i)*8, (block_pos_y+j)*8+64);
 			//autoDrop = 0;
