@@ -238,7 +238,6 @@ void IERG3810_TFTLCD_ShowChinese(u16 x, u16 y, u16 color, u16 bgcolor)
 	}
 }
 
-
 u16 IERG3810_TFTLCD_ReadColor(u16 x, u16 y){
 	u16 r;
 	u16 g;
@@ -275,6 +274,6 @@ u16 IERG3810_TFTLCD_ReadColor(u16 x, u16 y){
 	color |= r;
 	color |= g;
 	color |= b;
-    return color;
+  return color;
 
 }
