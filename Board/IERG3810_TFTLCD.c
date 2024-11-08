@@ -30,6 +30,13 @@ void IERG3810_TFTLCD_WrData(u16 data)
 	LCD->LCD_RAM=data;
 }
 
+
+u16 IERG3810_TFTLCD_RdData(void){
+	u16 tmp;
+	tmp=LCD->LCD_RAM;
+	return tmp;
+}
+
 void LCD_Set9341_Parameter(void)
 {
 	IERG3810_TFTLCD_WrReg(0X01);		//Software reset
@@ -231,23 +238,42 @@ void IERG3810_TFTLCD_ShowChinese(u16 x, u16 y, u16 color, u16 bgcolor)
 	}
 }
 
-u16 IERG3810_TFTLCD_ReadColor(u16 x, u16 y)
-{
-	/*
-	u16 color = 0;
-	u16 dummy;
-IERG3810_TFTLCD_WrReg(0x2A); // 设置列地址
-IERG3810_TFTLCD_WrData(x >> 8);
-IERG3810_TFTLCD_WrData(x & 0xFF);
+u16 IERG3810_TFTLCD_ReadColor(u16 x, u16 y){
+	u16 r;
+	u16 g;
+	u16 b;
+	u16 away;
+	u16 color;
+    IERG3810_TFTLCD_WrReg(0x2A); //set x position
+    IERG3810_TFTLCD_WrData(x>>8);
+    IERG3810_TFTLCD_WrData(x & 0xFF);
+    IERG3810_TFTLCD_WrData(0x01);
+    IERG3810_TFTLCD_WrData(0x3F);
 
-IERG3810_TFTLCD_WrReg(0x2B); // 设置行地址
-IERG3810_TFTLCD_WrData(y >> 8);
-IERG3810_TFTLCD_WrData(y & 0xFF);
+    IERG3810_TFTLCD_WrReg(0x2B); //set yposition
+    IERG3810_TFTLCD_WrData(y>>8);
+    IERG3810_TFTLCD_WrData(y & 0xFF);
+    IERG3810_TFTLCD_WrData(0x01);
+    IERG3810_TFTLCD_WrData(0xDF);
 
-IERG3810_TFTLCD_WrReg(0x2E); // 读取内存
-dummy = IERG3810_TFTLCD_RdData(); // 伪读数
-color = IERG3810_TFTLCD_RdData(); // 实际颜色值
+    IERG3810_TFTLCD_WrReg(0X2E);
 
-return color;
-*/
+    away=IERG3810_TFTLCD_RdData();
+
+	r=IERG3810_TFTLCD_RdData();
+	r = (r & 0x00FC) << 3;
+	
+
+	g=IERG3810_TFTLCD_RdData();
+	g = (g & 0x00F8) << 8;
+
+	b=IERG3810_TFTLCD_RdData();
+	b = (b &0x00F8) >>3;
+	
+
+	color |= r;
+	color |= g;
+	color |= b;
+  return color;
+
 }
