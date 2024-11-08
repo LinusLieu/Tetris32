@@ -1,5 +1,5 @@
-#ifndef __IERG3810_Draw
-#define __IERG3810_Draw
+#ifndef __IERG3810_DRAW_H
+#define __IERG3810_DRAW_H
 #include "stm32f10x.h"
 #include "Global.h"
 

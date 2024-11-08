@@ -6,7 +6,7 @@
 void IERG3810_NVIC_SetPriorityGroup (u8 prigroup);
 void IERG3810_key2_ExtiInit(void);
 void IERG3810_keyUP_ExtiInit(void);
-void IERG3810_PS2key_ExtiInit(void)
+void IERG3810_PS2key_ExtiInit(void);
 
 
 

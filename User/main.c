@@ -25,7 +25,7 @@ void Delay(u32 count)
 
 int main(void)
 {
-	
+	u8 thread = 0;
 	int i = 0, j = 0;
 
 
@@ -56,6 +56,40 @@ int main(void)
 		
 	while(1)
 	{
-
+		switch(thread){
+			case 0:
+				if (ps2count >= 11)
+				{
+					USART_print_int(2,opt);
+					//EXTI->IMR &= ~(1<<11);
+					if(opt == 0xF0){
+						stat = 1;
+					}else{
+						IERG3810_PS2key(stat,opt);
+						stat = 0;
+					}
+					checkbit = 0;
+					ps2key = 0;
+					ps2count = 0;
+					temp = 0;
+					opt = 0;
+					EXTI->PR = 1<<11;
+				}
+				timeout--;		
+		
+				if (timeout == 0)	//Clear PS2 keyboard data when timeout
+				{
+					//IERG3810_PS2key_reset();
+					timeout = 20000;
+					checkbit = 0;
+					ps2key = 0;
+					ps2count = 0;
+					temp = 0;
+					opt = 0;
+				}
+				break;
+			default:
+				break;
+		}
 	}
 }
