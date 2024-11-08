@@ -1,5 +1,5 @@
 #ifndef IERG3810_Draw
-#define RG3810_Draw
+#define IERG3810_Draw
 #include "stm32f10x.h"
 
 void Delay(u32 count);

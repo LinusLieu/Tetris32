@@ -6,6 +6,7 @@
 #include "IERG3810_interrupt.h"
 #include "IERG3810_TFTLCD.h"
 
+
 /*colors
 Z:red£º0XF800
 L:orange£º	0XFD20
@@ -98,8 +99,8 @@ int main(void)
 {
 	
 	int i = 0, j = 0;
-	u16 Playfield[10][24];
-	u16 block[4][4];
+
+
 	block[0][0] = switch_color(1);
 	block[1][0] = switch_color(1);
 	block[2][0] = switch_color(1);
