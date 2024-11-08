@@ -5,7 +5,8 @@
 #include "Global.h"
 #include "IERG3810_interrupt.h"
 #include "IERG3810_TFTLCD.h"
-
+#include "IERG3810_Draw.h"
+#include "Block_autoDrop.h"
 
 /*colors
 Z:red��0XF800
@@ -33,7 +34,7 @@ int main(void)
 	block[1][0] = switch_color(1);
 	block[2][0] = switch_color(1);
 	block[2][1] = switch_color(1);
-
+	
 	IERG3810_TFTLCD_Init();
 	for(i = 0; i < 10; i++)
 	{
@@ -52,10 +53,10 @@ int main(void)
 
   Delay(12000000);
 	Draw_playfield(Playfield);
-	Draw_block(block,4,14);
+	Draw_block(block);
 		
 	while(1)
 	{
-
+		Block_autoDrop();
 	}
 }
