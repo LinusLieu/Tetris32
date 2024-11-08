@@ -3,13 +3,13 @@
 #include "IERG3810_TFTLCD.h"
 #include "IERG3810_Draw.h"
 /*colors
-Z:red£º0XF800
-L:orange£º	0XFD20
-O:yellow£º0XFFE0
-S:green£º	0X400
-I:cyan£º	0X7FF
-J:blue£º0X1F
-T:violet£º	0X8010
+Z:red:0XF800
+L:orange:	0XFD20
+O:yellow:0XFFE0
+S:green:	0X400
+I:cyan:	0X7FF
+J:blue:0X1F
+T:violet:	0X8010
 */
 //draw acomplishment
 
