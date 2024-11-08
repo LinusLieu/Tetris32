@@ -1,4 +1,5 @@
 #include "stm32f10x.h"
+#include "Block.h"
 u8 Z[16]= {1,1,0,0,
             0,1,1,0,
             0,0,0,0,
