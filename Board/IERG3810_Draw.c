@@ -18,7 +18,7 @@ u16 switch_color(u16 type)
 	switch (type)
 	{
 		case 0:
-			return 0XFFFF;
+			return 0X7BEF;
 		case 1:
 			return 0XF800;
 		case 2:

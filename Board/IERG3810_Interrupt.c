@@ -34,6 +34,27 @@ void IERG3810_key2_ExtiInit(void)
 	NVIC->ISER[0] |= (1<<8);		//IRQ8
 }
 
+void IERG3810_key0_ExtiInit(void)
+{
+    // KEY0 at PE4, EXTI-4, IRQ#10
+    RCC->APB2ENR |= 1 << 6;       // enable port-E clock for KEY0
+    GPIOE->CRL &= 0xFFF0FFFF;     // modify PE4
+    GPIOE->CRL |= 0x00080000;     // pull high/low mode '10', input '00'
+    GPIOE->ODR |= 1 << 4;         // pull high
+
+    RCC->APB2ENR |= 0x01;         // Enable AFIO clock (RM0008, page 146)
+    AFIO->EXTICR[1] &= 0xFFFFF0FF;  // (RM0008, AFIO_EXTICR2, page-191)
+    AFIO->EXTICR[1] |= 0x00000400;  // configure PE4 for EXTI4
+
+    EXTI->IMR |= 1 << 4;          // (RM0008, page-211) edge trigger
+    EXTI->FTSR |= 1 << 4;         // (RM0008, page-212) falling edge
+    // EXTI->RTSR |= 1 << 4;      // (RM0008, page-212) rising edge (if needed)
+
+    NVIC->IP[10] = 0x65;          // set priority of this interrupt
+    NVIC->ISER[0] &= ~(1 << 10);  // clear the interrupt enable for IRQ10
+    NVIC->ISER[0] |= (1 << 10);   // enable IRQ10
+}
+
 
 void IERG3810_keyUP_ExtiInit(void)
 {

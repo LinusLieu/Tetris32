@@ -31,6 +31,23 @@ void IERG3810_SYSTICK_Init10ms(void)
 	SysTick->CTRL |= 0x00000003;	//What should be filled? set internal clock, use interrupt, start count
 }
 
+void EXTI4_IRQHandler(void){
+	block_pos_x++;
+	EXTI->PR = 1 << 4;	//Clear this exception pending bit
+	 Delay(100000);
+	        Draw_playfield(Playfield);
+		    Delay(100000);
+	        Draw_block(block);
+}
+
+void EXTI2_IRQHandler(void){
+	block_pos_x--;
+	EXTI->PR = 1 << 2;	//Clear this exception pending bit Delay(100000);
+	        Draw_playfield(Playfield);
+		    Delay(100000);
+	        Draw_block(block);
+}
+
 int main(void)
 {
 	u8 thread = 0;
@@ -40,13 +57,22 @@ int main(void)
 	block_pos_y = 12;
 	IERG3810_SYSTICK_Init10ms();
 	IERG3810_clock_tree_init();
+	IERG3810_TFTLCD_Init();
+	IERG3810_NVIC_SetPriorityGroup(5);
+	IERG3810_key0_ExtiInit();
+	IERG3810_key2_ExtiInit();
+	
+	Delay(1000000);
+	IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
+	Delay(1000000);
+	IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
 
 	block[0][0] = 1;
 	block[1][0] = 1;
 	block[2][0] = 1;
 	block[2][1] = 1;
 	
-	IERG3810_TFTLCD_Init();
+
 	for(i = 0; i < 10; i++)
 	{
 		for(j = 0; j < 20; j++)
