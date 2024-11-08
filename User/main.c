@@ -37,6 +37,8 @@ int main(void)
 	u8 thread = 0;
 	int i = 0, j = 0;
 	DAS = 1.5f;
+	block_pos_x = 5;
+	block_pos_y = 22;
 	IERG3810_SYSTICK_Init10ms();
 	IERG3810_clock_tree_init();
 

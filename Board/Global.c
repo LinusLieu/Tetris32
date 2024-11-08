@@ -9,3 +9,5 @@ u8 seven_bag_2[7];
 float DAS;
 u16 DAS_Timer = 0;
 u16 autoDrop = 0;
+u8 key = 0;
+u8 block_pos_x,block_pos_y;

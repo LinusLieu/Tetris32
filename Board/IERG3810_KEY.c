@@ -16,6 +16,7 @@ void IERG3810_KEY_Init(void){
 	GPIOA->ODR &= 0xFFFFFFFE;
 }
 
+/*
 void IERG3810_PS2key(u8 stat,u8 key){
 	if(stat){
 		switch(key){
@@ -62,3 +63,4 @@ void IERG3810_PS2key(u8 stat,u8 key){
 			}
 	}
 }
+*/

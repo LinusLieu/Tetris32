@@ -78,8 +78,8 @@ void Draw_block(u16 block[4][4])
 	{
 		for(j = 0; j < 4; j++)
 		{
-			color = block[4][4];
-			IERG3810_Draw_DrawSquare(color, 80+i*8, (j+autoDrop)*8+64);
+			color = block[i][j];
+			IERG3810_Draw_DrawSquare(color, 80+(block_pos_x+i)*8, (block_pos_y+j-autoDrop)*8+64);
 			//autoDrop = 0;
 		}
 	}

@@ -11,4 +11,5 @@ extern float DAS;
 extern u16 DAS_Timer;
 extern u16 autoDrop;
 extern u8 key;
+extern u8 block_pos_x,block_pos_y;
 #endif
