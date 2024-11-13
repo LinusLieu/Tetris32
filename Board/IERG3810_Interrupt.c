@@ -43,8 +43,8 @@ void IERG3810_key0_ExtiInit(void)
     GPIOE->ODR |= 1 << 4;         // pull high
 
     RCC->APB2ENR |= 0x01;         // Enable AFIO clock (RM0008, page 146)
-    AFIO->EXTICR[1] &= 0xFFFFF0FF;  // (RM0008, AFIO_EXTICR2, page-191)
-    AFIO->EXTICR[1] |= 0x00000400;  // configure PE4 for EXTI4
+    AFIO->EXTICR[1] &= 0xFFFFFFF0;  // (RM0008, AFIO_EXTICR2, page-191)
+    AFIO->EXTICR[1] |= 0x00000004;  // configure PE4 for EXTI4
 
     EXTI->IMR |= 1 << 4;          // (RM0008, page-211) edge trigger
     EXTI->FTSR |= 1 << 4;         // (RM0008, page-212) falling edge
