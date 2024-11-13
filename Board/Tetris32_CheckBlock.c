@@ -12,6 +12,8 @@ int Shift_check(void)
             conv += Playfield[block_pos_x+i+block_pos_x_movement+1][block_pos_y+j+block_pos_y_movement+1] * block[i][j];
         }
     }
+    USART_print_int(2,0xFF);
+    USART_print_int(2,conv);
     if(conv){
         block_pos_x_movement = 0;
         block_pos_y_movement = 0;
@@ -33,7 +35,7 @@ int Bottom_check_conv(void)
     int i = 0, j = 0;
     for(i = 0; i < 4; i++){
         for(j = 0; j < 4; j++){
-            conv += Playfield[block_pos_x+i+block_pos_x_movement+1][block_pos_y+j+block_pos_y_movement+1] * block[i][j];
+            conv += Playfield[block_pos_x+i+1][block_pos_y+j+block_pos_y_movement+1] * block[i][j];
         }
     }
     if(conv){

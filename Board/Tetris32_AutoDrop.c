@@ -12,9 +12,6 @@ void Block_autoDrop(void)
         block_pos_y_movement = -1;
         thread = 2;
         DAS_Timer=0; 
-        USART_print_int(2,0xFF);
-        USART_print_int(2,thread);
-        USART_print_int(2,0xEE);
         
     }
 }

@@ -72,7 +72,7 @@ int main(void)
 	block[1][0] = 3;
 	block[2][0] = 3;
 	block[1][1] = 3;
-	block[2][1	] = 3;
+	block[2][1] = 3;
 	
 	Playfield_init();
 
@@ -81,7 +81,7 @@ int main(void)
 	random_block_generator();
 	cnt = 0;
 */
-  	Delay(1000000);
+  Delay(1000000);
 	Draw_playfield();
 	Delay(1000000);
 	Draw_block();
@@ -90,7 +90,7 @@ int main(void)
 
 	while(1)
 	{
-		USART_print_int(2,thread);
+		//USART_print_int(2,thread);
 		cnt++;
 		switch(thread){
 			case 1:
@@ -100,6 +100,9 @@ int main(void)
 				Bottom_check_conv();		//goto thread 5
 				break;
 			case 3:
+				USART_print_int(2,0xAA);
+				USART_print_int(2,block_pos_x);
+				USART_print_int(2,block_pos_y);
 				Delay(100000);
 	      		Draw_playfield();
 				Delay(100000);
@@ -114,6 +117,7 @@ int main(void)
 				thread = 6;
 				break;
 			case 6:
+				USART_print_int(2,0xAF);
 				random_block_generator();
 				block_pos_x = 4;
 				block_pos_y = 10;
