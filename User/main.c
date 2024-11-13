@@ -4,8 +4,10 @@
 #include "IERG3810_LED.h"
 #include "Global.h"
 #include "IERG3810_interrupt.h"
-#include "IERG3810_TFTLCD.h"
+#include "IERG3810_TFTLCD.h"`
 #include "IERG3810_Draw.h"
+#include "Tetris32_AutoDrop.h"
+#include "Tetris32_CheckBlock.h"
 
 /*colors
 Z:red��0XF800
@@ -85,13 +87,6 @@ int main(void)
 		}
 	}
 	
-	/*
-	Playfield[4][0] = 5;
-	Playfield[5][0] = 5;
-	Playfield[2][0] = 5;
-	Playfield[3][0] = 5;
-	*/
-
   Delay(1000000);
 	Draw_playfield(Playfield);
 		Delay(1000000);
