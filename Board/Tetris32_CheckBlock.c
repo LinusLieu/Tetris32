@@ -58,6 +58,7 @@ void insert_block(void)
     {
         for(j = 0; j < 4; j++)
         {
+            if(block[i][j])
             Playfield[block_pos_x+i+1][block_pos_y+j+1] = block[i][j];
         }
     }

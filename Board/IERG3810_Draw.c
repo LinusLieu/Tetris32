@@ -82,9 +82,9 @@ void Draw_block(void)
 	{
 		for(j = 0; j < 4; j++)
 		{
-			if(block_pos_x+i+1 > 0 && block_pos_x+i+1 < 11){
+			if(block_pos_x+i+1 > 0 && block_pos_x+i < 10){
 			color = switch_color(block[i][j]);
-			if(!color){color = Playfield[block_pos_x+i+1][block_pos_y+j+1];}
+			if(block[i][j] == 0){color = switch_color(Playfield[block_pos_x+i+1][block_pos_y+j+1]);}
 			IERG3810_Draw_DrawSquare(color, 80+(block_pos_x+1+i)*8, (block_pos_y+1+j)*8+64);
 			//autoDrop = 0;
 			}

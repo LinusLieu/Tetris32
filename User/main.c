@@ -53,7 +53,7 @@ int main(void)
 	
 	DAS = 1.5f;
 	block_pos_x = 4;
-	block_pos_y = 15;
+	block_pos_y = 10;
 	//u8 movement = 0;
 	IERG3810_SYSTICK_Init10ms();
 	IERG3810_clock_tree_init();
@@ -94,7 +94,7 @@ int main(void)
 				Block_autoDrop();
 				break;
 			case 2:
-				Bottom_check_conv();
+				Bottom_check_conv();		//goto thread 5
 				break;
 			case 3:
 				Delay(100000);
@@ -113,7 +113,7 @@ int main(void)
 			case 6:
 				random_block_generator();
 				block_pos_x = 4;
-				block_pos_y = 15;
+				block_pos_y = 10;
 				thread = 1;
 				break;
 			default:
