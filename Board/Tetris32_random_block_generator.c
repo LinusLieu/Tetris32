@@ -8,54 +8,58 @@ void random_block_generator(void)
     u16 temp = 0;
     int i = 0, j = 0;
     temp = cnt % 7;
+    direction = 0;
+    block_center_x = 1;
+    block_center_y = 2;
     switch (temp)
     {
         case 0 :
         for(i = 0;i<4;i++){
             for(j = 0; j < 4; j++){
-                block[i][j] = Z[i][j];
+                block[j][i] = Z[i][j];
             }
         }
         break;
         case 1 :
         for(i = 0;i<4;i++){
             for(j = 0; j < 4; j++){
-                block[i][j] = L[i][j];
+                block[j][i] = L[i][j];
             }
         }
         break;
         case 2 :
+        iso = 1;
         for(i = 0;i<4;i++){
             for(j = 0; j < 4; j++){
-                block[i][j] = O[i][j];
+                block[j][i] = O[i][j];
             }
         }
         break;
         case 3 :
         for(i = 0;i<4;i++){
             for(j = 0; j < 4; j++){
-                block[i][j] = S[i][j];
+                block[j][i] = S[i][j];
             }
         }
         break;
         case 4 :
         for(i = 0;i<4;i++){
             for(j = 0; j < 4; j++){
-                block[i][j] = I[i][j];
+                block[j][i] = I[i][j];
             }
         }
         break;
         case 5 :
         for(i = 0;i<4;i++){
             for(j = 0; j < 4; j++){
-                block[i][j] = J[i][j];
+                block[j][i] = J[i][j];
             }
         }
         break;
         case 6 :
         for(i = 0;i<4;i++){
             for(j = 0; j < 4; j++){
-                block[i][j] = T[i][j];
+                block[j][i] = T[i][j];
             }
         }
         break;
