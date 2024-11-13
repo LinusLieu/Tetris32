@@ -11,3 +11,4 @@ u16 DAS_Timer = 0;
 u16 autoDrop = 0;
 u8 key = 0;
 u8 block_pos_x,block_pos_y;
+u16 cnt = 0;

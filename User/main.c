@@ -8,6 +8,7 @@
 #include "IERG3810_Draw.h"
 #include "Tetris32_AutoDrop.h"
 #include "Tetris32_CheckBlock.h"
+#include "random_block_generator.h"
 
 /*colors
 Z:red��0XF800
@@ -74,6 +75,9 @@ int main(void)
 	block[2][0] = 1;
 	block[2][1] = 1;
 	
+	cnt = 2546;
+	random_block_generator();
+	cnt = 0;
 
 	for(i = 0; i < 10; i++)
 	{
@@ -94,6 +98,7 @@ int main(void)
 		
 	while(1)
 	{
+		cnt++;
 		
 		/*
 		switch(thread){

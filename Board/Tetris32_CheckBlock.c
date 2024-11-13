@@ -1,7 +1,7 @@
 #include "stm32f10x.h"
 #include "Global.h"
 #include "Tetris32_CheckBlock.h"
-
+#include "random_block_generator.h"
 int Bottom_check(void)
 {
     
@@ -30,5 +30,7 @@ void insert_block(void)
             Playfield[block_pos_x+i][block_pos_y+j] = block[i][j];
         }
     }
-
+    random_block_generator();
+    block_pos_x = 5;
+	block_pos_y = 12;
 }
