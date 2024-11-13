@@ -56,7 +56,6 @@ int main(void)
 	DAS = 1.5f;
 	block_pos_x = 4;
 	block_pos_y = 10;
-	//u8 movement = 0;
 	IERG3810_SYSTICK_Init10ms();
 	IERG3810_clock_tree_init();
 	IERG3810_TFTLCD_Init();
@@ -70,21 +69,23 @@ int main(void)
 	Delay(1000000);
 	IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
 
-	block[0][0] = 1;
-	block[1][0] = 1;
-	block[2][0] = 1;
-	block[2][1] = 1;
+	block[1][0] = 3;
+	block[2][0] = 3;
+	block[1][1] = 3;
+	block[2][1	] = 3;
 	
 	Playfield_init();
 
+/*
 	cnt = 2546;
 	random_block_generator();
 	cnt = 0;
-
+*/
   	Delay(1000000);
 	Draw_playfield();
 	Delay(1000000);
 	Draw_block();
+		
 		
 
 	while(1)

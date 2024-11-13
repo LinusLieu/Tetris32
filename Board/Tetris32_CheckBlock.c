@@ -1,6 +1,7 @@
 #include "stm32f10x.h"
 #include "Global.h"
 #include "Tetris32_CheckBlock.h"
+#include "IERG3810_USART.h"
 
 int Shift_check(void)
 {
@@ -26,42 +27,13 @@ int Shift_check(void)
     }
 }
 
-/*int Bottom_check_conv(void)
-{
-    int conv = 0;
-    int i = 0, j = 0;
-    for(i = 0; i < 4; i++){
-        for(j = 0; j < 4; j++){
-            conv += Playfield[block_pos_x+i+block_pos_x_movement+1][block_pos_y+j+block_pos_y_movement+1] * block[i][j];
-        }
-    }
-    if(conv){
-        block_pos_x_movement = 0;
-        block_pos_y_movement = 0;
-        thread = 5;
-        return 1;
-    }else{
-    block_pos_x += block_pos_x_movement;
-    block_pos_y += block_pos_y_movement;
-    block_pos_x_movement = 0;
-    block_pos_y_movement = 0;
-    thread = 3;
-    return 0;
-    }
-}
-*/
-
 int Bottom_check_conv(void)
 {
     int conv = 0;
     int i = 0, j = 0;
     for(i = 0; i < 4; i++){
         for(j = 0; j < 4; j++){
-            if(block[i][j] != 0 && Playfield[i+block_pos_x][j+block_pos_y] != 0)
-            {
-                conv=1;
-                break;
-            }
+            conv += Playfield[block_pos_x+i+block_pos_x_movement+1][block_pos_y+j+block_pos_y_movement+1] * block[i][j];
         }
     }
     if(conv){
