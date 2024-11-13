@@ -14,4 +14,5 @@ extern u8 key;
 extern u8 block_pos_x,block_pos_y;
 extern u8 thread;
 extern int block_pos_x_movement,block_pos_y_movement;
+extern u16 cnt;
 #endif

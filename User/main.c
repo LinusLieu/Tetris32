@@ -4,10 +4,11 @@
 #include "IERG3810_LED.h"
 #include "Global.h"
 #include "IERG3810_interrupt.h"
-#include "IERG3810_TFTLCD.h"`
+#include "IERG3810_TFTLCD.h"
 #include "IERG3810_Draw.h"
 #include "Tetris32_AutoDrop.h"
 #include "Tetris32_CheckBlock.h"
+#include "Tetris32_random_block_generator.h"
 
 /*colors
 Z:red��0XF800
@@ -73,8 +74,12 @@ int main(void)
 	block[2][1] = 1;
 	
 	Playfield_init();
-	
-  Delay(1000000);
+
+	cnt = 2546;
+	random_block_generator();
+	cnt = 0;
+
+  	Delay(1000000);
 	Draw_playfield();
 	Delay(1000000);
 	Draw_block();
@@ -83,6 +88,7 @@ int main(void)
 	while(1)
 	{
 		USART_print_int(2,thread);
+		cnt++;
 		switch(thread){
 			case 1:
 				Block_autoDrop();
@@ -92,9 +98,9 @@ int main(void)
 				break;
 			case 3:
 				Delay(100000);
-	      Draw_playfield();
+	      		Draw_playfield();
 				Delay(100000);
-	      Draw_block();
+	      		Draw_block();
 				thread = 1;
 				break;
 			case 4:
@@ -102,7 +108,13 @@ int main(void)
 				break;
 			case 5:
 				insert_block();
-				thread = 3;
+				thread = 6;
+				break;
+			case 6:
+				random_block_generator();
+				block_pos_x = 4;
+				block_pos_y = 15;
+				thread = 1;
 				break;
 			default:
 				break;

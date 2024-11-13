@@ -1,7 +1,6 @@
 #include "stm32f10x.h"
 #include "Global.h"
 #include "Tetris32_CheckBlock.h"
-#include "IERG3810_USART.h"
 
 int Shift_check(void)
 {

@@ -13,3 +13,4 @@ u8 key = 0;
 u8 block_pos_x,block_pos_y;
 u8 thread;
 int block_pos_x_movement = 0,block_pos_y_movement = 0;
+u16 cnt = 0;
