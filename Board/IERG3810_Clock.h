@@ -1,5 +1,5 @@
-#ifndef __IERG3810_KEY_H
-#define __IERG3810_KEY_H
+#ifndef __IERG3810_CLOCK_H
+#define __IERG3810_CLOCK_H
 #include "stm32f10x.h"
 
 // put procedure header here

@@ -3,20 +3,18 @@
 #include "IERG3810_Draw.h"
 #include "Tetris32_AutoDrop.h"
 #include "Tetris32_CheckBlock.h"
+#include "IERG3810_USART.h"
 
 void Block_autoDrop(void)
 {
     if(DAS_Timer*DAS > 100)
     {
-        if(Bottom_check()){
-            insert_block();
-        }else{
-            block_pos_y--;
-            Delay(100000);
-	        Draw_playfield(Playfield);
-		    Delay(100000);
-	        Draw_block(block);
-        }
+        block_pos_y_movement = -1;
+        thread = 2;
         DAS_Timer=0; 
+        USART_print_int(2,0xFF);
+        USART_print_int(2,thread);
+        USART_print_int(2,0xEE);
+        
     }
 }

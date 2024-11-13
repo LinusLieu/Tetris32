@@ -60,21 +60,21 @@ void IERG3810_Draw_DrawSquare(u16 color, u16 start_x, u16 start_y)
 	}
 }
 
-void Draw_playfield(u16 playfield[10][24])
+void Draw_playfield(void)
 {
 	int i = 0, j = 0;
 	int color = 0;
-	for(i = 0; i < 10; i++)
+	for(i = 1; i < 11; i++)
 	{
-		for(j = 0; j < 24; j++)
+		for(j = 1; j < 25; j++)
 		{
-			color = switch_color(playfield[i][j]);
+			color = switch_color(Playfield[i][j]);
 			IERG3810_Draw_DrawSquare(color, 80+i*8, j*8+64);
 		}
 	}
 }
 
-void Draw_block(u16 block[4][4])
+void Draw_block(void)
 {
 	int i = 0, j = 0;
 	int color = 0;
@@ -82,10 +82,35 @@ void Draw_block(u16 block[4][4])
 	{
 		for(j = 0; j < 4; j++)
 		{
+			if(block_pos_x+i+1 > 0 && block_pos_x+i+1 < 11){
 			color = switch_color(block[i][j]);
-			if(!color){color = Playfield[block_pos_x+i][block_pos_y+j];}
-			IERG3810_Draw_DrawSquare(color, 80+(block_pos_x+i)*8, (block_pos_y+j)*8+64);
+			if(!color){color = Playfield[block_pos_x+i+1][block_pos_y+j+1];}
+			IERG3810_Draw_DrawSquare(color, 80+(block_pos_x+1+i)*8, (block_pos_y+1+j)*8+64);
 			//autoDrop = 0;
+			}
 		}
 	}
+}
+
+void Playfield_init(void){
+	int i,j;
+	for(i = 0; i < 12; i++)
+	{
+		for(j = 0; j < 21; j++)
+		{
+			Playfield[i][j] = 0;
+		}
+		for(j = 20; j < 25; j++)
+		{
+			Playfield[i][j] = 8;
+		}
+	}
+	for(i = 0;i<12;i++){
+		Playfield[i][0] = 10;
+	}
+	for(j = 0;j<21;j++){
+		Playfield[0][j] = 10;
+		Playfield[11][j] = 10;
+	}
+
 }

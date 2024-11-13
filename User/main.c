@@ -34,35 +34,33 @@ void IERG3810_SYSTICK_Init10ms(void)
 }
 
 void EXTI4_IRQHandler(void){
-	block_pos_x++;
+	block_pos_x_movement = 1;
+	thread = 4;
 	EXTI->PR = 1 << 4;	//Clear this exception pending bit
-	 Delay(100000);
-	        Draw_playfield(Playfield);
-		    Delay(100000);
-	        Draw_block(block);
 }
 
 void EXTI2_IRQHandler(void){
-	block_pos_x--;
+	block_pos_x_movement = -1;
+	thread = 4;
 	EXTI->PR = 1 << 2;	//Clear this exception pending bit Delay(100000);
-	        Draw_playfield(Playfield);
-		    Delay(100000);
-	        Draw_block(block);
 }
 
 int main(void)
 {
-	u8 thread = 0;
 	int i = 0, j = 0;
+	thread = 1;
+	
 	DAS = 1.5f;
-	block_pos_x = 5;
-	block_pos_y = 12;
+	block_pos_x = 4;
+	block_pos_y = 15;
+	//u8 movement = 0;
 	IERG3810_SYSTICK_Init10ms();
 	IERG3810_clock_tree_init();
 	IERG3810_TFTLCD_Init();
 	IERG3810_NVIC_SetPriorityGroup(5);
 	IERG3810_key0_ExtiInit();
 	IERG3810_key2_ExtiInit();
+	IERG3810_USART2_init(36,9600);
 	
 	Delay(1000000);
 	IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
@@ -74,64 +72,41 @@ int main(void)
 	block[2][0] = 1;
 	block[2][1] = 1;
 	
-
-	for(i = 0; i < 10; i++)
-	{
-		for(j = 0; j < 20; j++)
-		{
-			Playfield[i][j] = 0;
-		}
-		for(j = 20; j < 24; j++)
-		{
-			Playfield[i][j] = 8;
-		}
-	}
+	Playfield_init();
 	
   Delay(1000000);
-	Draw_playfield(Playfield);
-		Delay(1000000);
-	Draw_block(block);
+	Draw_playfield();
+	Delay(1000000);
+	Draw_block();
 		
+
 	while(1)
 	{
-		
-		/*
+		USART_print_int(2,thread);
 		switch(thread){
-			case 0:
-				if (ps2count >= 11)
-				{
-					USART_print_int(2,opt);
-					//EXTI->IMR &= ~(1<<11);
-					if(opt == 0xF0){
-						stat = 1;
-					}else{
-						IERG3810_PS2key(stat,opt);
-						stat = 0;
-					}
-					checkbit = 0;
-					ps2key = 0;
-					ps2count = 0;
-					temp = 0;
-					opt = 0;
-					EXTI->PR = 1<<11;
-				}
-				timeout--;		
-		
-				if (timeout == 0)	//Clear PS2 keyboard data when timeout
-				{
-					//IERG3810_PS2key_reset();
-					timeout = 20000;
-					checkbit = 0;
-					ps2key = 0;
-					ps2count = 0;
-					temp = 0;
-					opt = 0;
-				}
+			case 1:
+				Block_autoDrop();
+				break;
+			case 2:
+				Bottom_check_conv();
+				break;
+			case 3:
+				Delay(100000);
+	      Draw_playfield();
+				Delay(100000);
+	      Draw_block();
+				thread = 1;
+				break;
+			case 4:
+				Shift_check();
+				break;
+			case 5:
+				insert_block();
+				thread = 3;
 				break;
 			default:
 				break;
 		}
-		*/
-		Block_autoDrop();
+		
 	}
 }
