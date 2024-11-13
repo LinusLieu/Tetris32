@@ -38,12 +38,14 @@ void EXTI4_IRQHandler(void){
 	block_pos_x_movement = 1;
 	thread = 4;
 	EXTI->PR = 1 << 4;	//Clear this exception pending bit
+	cnt += 1;
 }
 
 void EXTI2_IRQHandler(void){
 	block_pos_x_movement = -1;
 	thread = 4;
 	EXTI->PR = 1 << 2;	//Clear this exception pending bit Delay(100000);
+	cnt += 3;
 }
 
 int main(void)
