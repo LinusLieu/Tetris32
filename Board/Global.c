@@ -20,3 +20,6 @@ u8 block_center_x = 1;
 u8 block_center_y = 2;
 u8 direction;
 u8 iso;
+u16 Blocks[14]={0,1,2,3,4,5,6,4,2,1,3,5,6,4};
+u16 Bag7cnt = 0;
+u16 PRE_block[4][4];

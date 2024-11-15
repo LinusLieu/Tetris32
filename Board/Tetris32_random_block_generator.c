@@ -2,15 +2,21 @@
 #include "Global.h"
 #include "Block.h"
 #include "Tetris32_random_block_generator.h"
-
+#include "Tetris32_generate_7bag.h"
 void random_block_generator(void)
 {
     u16 temp = 0;
     int i = 0, j = 0;
-    temp = cnt % 7;
-    direction = 0;
     block_center_x = 1;
     block_center_y = 2;
+		temp = Blocks[Bag7cnt];
+		Bag7cnt++;
+		if(temp > 6)
+		{
+			Bag7cnt = 0;
+			generate_7bag();
+		}
+	
     switch (temp)
     {
         case 0 :

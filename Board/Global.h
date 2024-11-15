@@ -20,4 +20,7 @@ extern u8 block_center_offset_x,block_center_offset_y;  //used for rotation, whi
 extern u8 block_center_x,block_center_y;
 extern u8 direction;
 extern u8 iso;
+extern u16 Blocks[14];
+extern u16 Bag7cnt;
+extern u16 PRE_block[4][4];
 #endif
