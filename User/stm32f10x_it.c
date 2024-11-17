@@ -135,7 +135,7 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  DAS_Timer++;
+  task1HeartBeat++;
 }
 
 /******************************************************************************/

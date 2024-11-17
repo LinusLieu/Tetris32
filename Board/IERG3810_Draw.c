@@ -84,8 +84,10 @@ void Draw_playfield_2(void)
 	{
 		for(j = 0; j < 4; j++)
 		{
-			color = switch_color(Playfield[block_pos_x+(1-block_center_x)+i+block_pos_x_movement+3][block_pos_y+(2-block_center_y)+j+2]);
-			IERG3810_Draw_DrawSquare(color, 80+(block_pos_x+(1-block_center_x)+i+block_pos_x_movement+3-4)*8, (block_pos_y+(2-block_center_y)+j+2-4)*8+64);
+			if(block_pos_x_pre+(1-block_center_x)+i > 0 && block_pos_x_pre+(1-block_center_x)+i < 11 && block_pos_y_pre+(2-block_center_y) + j > 2 && block_pos_y_pre +(2-block_center_y)+ j < 28){
+				color = switch_color(Playfield[block_pos_x_pre+(1-block_center_x)+i+3][block_pos_y_pre+(2-block_center_y)+j+1]);
+				IERG3810_Draw_DrawSquare(color, 80+(block_pos_x_pre+(1-block_center_x)+i-1)*8, (block_pos_y_pre+(2-block_center_y)+j-3)*8+64);
+			}
 		}
 	}
 }
@@ -131,4 +133,13 @@ void Playfield_init(void){
 		}
 	}
 
+}
+
+void Draw_update(void){
+	IERG3810_DS0(1);
+    Delay(50000);
+	Draw_playfield_2();
+	Delay(50000);
+	Draw_block();
+    IERG3810_DS0(0);
 }

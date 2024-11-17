@@ -9,4 +9,5 @@ void Draw_playfield(void);
 void Draw_block(void);
 void Playfield_init(void);
 void Draw_playfield_2(void);
+void Draw_update(void);
 #endif

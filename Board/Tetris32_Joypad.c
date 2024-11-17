@@ -54,13 +54,23 @@ void Joypad_Clock_ExtiInit(void)
 
 void Joypad_input_recog(void){
     u8 i;
+    IERG3810_DS1(pressed[6]);
     if(!joypadkey[6]){
-        IERG3810_DS0(1);
-        Delay(1000);
+        if(pressed[6] == 0){
         block_pos_x_movement_tmp = -1;
-	    Shift_check();
-        IERG3810_DS0(0);
-    }
+        pressed[6] = 1;
+        }
+    }else{
+        pressed[6] = 0;
+        }
+    if(!joypadkey[7]){
+       if(pressed[7] == 0){
+        block_pos_x_movement_tmp = 1;
+        pressed[7] = 1;
+        }
+    }else{
+        pressed[7] = 0;
+        }
     if(!joypadkey[0]){
         thread = 7;
     }

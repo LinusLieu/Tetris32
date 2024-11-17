@@ -18,12 +18,13 @@ int Shift_check(void)
     USART_print_int(2,conv);
     if(conv){
         block_pos_x_movement = 0;
-        thread = 1;
         return conv;
     }else{
+    block_pos_x_pre = block_pos_x;
+    block_pos_y_pre = block_pos_y;
     block_pos_x += block_pos_x_movement;
     block_pos_x_movement = 0;
-    thread = 3;
+    Draw_update();
     return conv;
     }
 }
@@ -39,9 +40,15 @@ int Bottom_check_conv(void)
     }
     if(conv){
         block_pos_y_movement = 0;
-        thread = 5;
+        //thread = 5;
+        insert_block();
+        random_block_generator();
+				block_pos_x = 4;
+				block_pos_y = 10;
         return conv;
     }else{
+    block_pos_x_pre = block_pos_x;
+    block_pos_y_pre = block_pos_y;
     block_pos_y += block_pos_y_movement;
     block_pos_y_movement = 0;
     thread = 3;
