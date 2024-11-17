@@ -76,6 +76,20 @@ void Draw_playfield(void)
 	}
 }
 
+void Draw_playfield_2(void)
+{
+	int i = 0, j = 0;
+	int color = 0;
+	for(i = 0; i < 4; i++)
+	{
+		for(j = 0; j < 4; j++)
+		{
+			color = switch_color(Playfield[block_pos_x+(1-block_center_x)+i+block_pos_x_movement+3][block_pos_y+(2-block_center_y)+j+2]);
+			IERG3810_Draw_DrawSquare(color, 80+(block_pos_x+(1-block_center_x)+i+block_pos_x_movement+3-4)*8, (block_pos_y+(2-block_center_y)+j+2-4)*8+64);
+		}
+	}
+}
+
 void Draw_block(void)
 {
 	int i = 0, j = 0;

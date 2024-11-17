@@ -8,5 +8,5 @@ void IERG3810_Draw_DrawSquare(u16 color, u16 start_x, u16 start_y);
 void Draw_playfield(void);
 void Draw_block(void);
 void Playfield_init(void);
-
+void Draw_playfield_2(void);
 #endif

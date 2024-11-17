@@ -10,6 +10,8 @@
 #include "Tetris32_CheckBlock.h"
 #include "Tetris32_random_block_generator.h"
 #include "Tetris32_SRS.h"
+#include "Tetris32_Joypad.h"
+#include "Tetris32_Timer.h"
 
 /*colors
 Z:red��0XF800
@@ -25,6 +27,16 @@ void Delay(u32 count)
 {
 	u32 i;
 	for (i=0;i<count;i++);
+}
+
+
+void TIM3_IRQHandler(void)
+{
+	/*
+	block_pos_y_movement = -1;
+	tmp = Bottom_check_conv();		//goto thread 5
+	*/
+	Block_autoDrop();
 }
 
 void IERG3810_SYSTICK_Init10ms(void)
@@ -55,6 +67,23 @@ void EXTI0_IRQHandler(void)
 	EXTI->PR = 0x00000001;	//Clear this exception pending bit
 }
 
+void EXTI9_5_IRQHandler(void)
+{
+	joypadkey[key_count] = GPIOC->IDR & 1 << 9;
+	key_count++;
+	Delay(1);
+	EXTI->PR = 1<<8;
+}
+
+void EXTI15_10_IRQHandler(void)
+{
+	joypadkey[key_count] = GPIOC->IDR & 1 << 9;
+	key_count++;
+	Delay(1);
+	EXTI->PR = 1<<12;
+}
+
+
 int main(void)
 {
 	int i = 0, j = 0;
@@ -63,8 +92,10 @@ int main(void)
 	u8 centx[12] = {35,69,78,84,69,82,63,56,0,0,0,0};
 	u8 centy[12] = {35,69,78,84,69,82,63,57,0,0,0,0};
 	u8 cov[12] = {67,79,78,86,0,0,0,0,0,0,0,0};
+	u8 press[12] = {43,69,89,29,0,0,0,0,0,0,0,0};
 	u8 tmp;
-	thread = 1;
+	thread = 8;
+	tmpthread = 1;
 	
 	DAS = 1.5f;
 	block_pos_x = 4;
@@ -77,8 +108,24 @@ int main(void)
 	IERG3810_key2_ExtiInit();
 	IERG3810_keyUP_ExtiInit();
 	IERG3810_USART2_init(36,9600);
+	IERG3810_LED_Init();
 	
+	Joypad_init();
+	Joypad_Latch_ExtiInit();
+	Joypad_Clock_ExtiInit();
+	
+	RCC->APB2ENR |= 0x00000024;
+    GPIOB->CRH &= 0xFFFF00FF;
+    GPIOB->CRH |= 0xFFFF38FF;
+    GPIOD->CRL &= 0xFFFF0FFF;
+    GPIOD->CRL |= 0x00003000;
+
+    GPIOB->ODR &= 0xFFFFFDFF;
+    GPIOB->ODR |= 0x00000400;
+
 	direction = 0;
+	
+	IERG3810_TIM3_Init(9999,7199);
 	
 	Delay(1000000);
 	IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
@@ -99,13 +146,10 @@ int main(void)
 		IERG3810_TFTLCD_ShowChar(10 * (1+i),280,centx[i]+32,0xFFFF,0x0000);
 		IERG3810_TFTLCD_ShowChar(10 * (1+i)+120,280,centy[i]+32,0xFFFF,0x0000);
 		IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+32,0xFFFF,0x0000);
+		IERG3810_TFTLCD_ShowChar(10 * (1+i),30,press[i]+32,0xFFFF,0x0000);
+		
 	}
 
-/*
-	cnt = 2546;
-	random_block_generator();
-	cnt = 0;
-*/
   Delay(1000000);
 	Draw_playfield();
 	Delay(1000000);
@@ -117,6 +161,7 @@ int main(void)
 	{
 		//USART_print_int(2,thread);
 		cnt++;
+		/*
 		switch(thread){
 			case 1:
 				Block_autoDrop();
@@ -143,11 +188,18 @@ int main(void)
 					IERG3810_TFTLCD_ShowChar(10 * (1+i),300,posx[i]+48,0xFFFF,0x0000);
 					IERG3810_TFTLCD_ShowChar(10 * (1+i)+120,300,posy[i]+48,0xFFFF,0x0000);
 				}
+				for(i = 0;i<8;i++){
+					if(!joypadkey[i]){
+						IERG3810_TFTLCD_ShowChar(10 * (1+i+4),30,i+48+1,0xFFFF,0x0000);
+					}else{
+						IERG3810_TFTLCD_ShowChar(10 * (1+i+4),30,48,0x0000,0x0000);
+					}
+				}
 				Delay(100000);
-	      		Draw_playfield();
+	      		Draw_playfield_2();
 				Delay(100000);
 	      		Draw_block();
-				thread = 1;
+				thread = 8;
 				break;
 			case 4:
 				tmp = Shift_check();
@@ -172,9 +224,30 @@ int main(void)
 			case 7:
 				rotate_clockwise();
 				thread = 4;
+			case 8:	//joypad input
+				Joypad_sendpulse();
+				Joypad_input_recog();
+				//thread = tmpthread;
+				thread = 1;
+				break;
 			default:
 				break;
 		}
-		
+		*/
 	}
+	cov[9] = (tmp >> 4) & 0xF;
+	cov[10] = tmp & 0xF;
+	for(i = 9;i<11;i++)
+	{
+		IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+48,0xFFFF,0x0000);
+	}
+	Joypad_sendpulse();
+	Joypad_input_recog();
+	for(i = 0;i<8;i++){
+					if(!joypadkey[i]){
+						IERG3810_TFTLCD_ShowChar(10 * (1+i+4),30,i+48+1,0xFFFF,0x0000);
+					}else{
+						IERG3810_TFTLCD_ShowChar(10 * (1+i+4),30,48,0x0000,0x0000);
+					}
+				}
 }
