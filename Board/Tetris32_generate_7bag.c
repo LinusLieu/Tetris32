@@ -10,19 +10,21 @@ u16 generate_random(void)
 
     return cnt;
 }
-//需要在外面定义u16 blocks[7] = {1,2,3,4,5,6,7};
-void generate_7bag(u16 blocks[7])
+//outside_design_u16 blocks[7] = {1,2,3,4,5,6,7};
+void generate_7bag(void)
 {
-    for (int i = 6; i > 0; i--) {
-        cnt = generate_random(cnt);       // 生成随机数
-        u16 j = cnt % (i + 1);        // 生成范围 0 到 i 的随机索引
+		u16 i = 0;
+		u16 temp = 0;
+		u16 j = 0;
+    for (i = 6; i > 0; i--) {
+        cnt = generate_random();       // generate random
+        j = cnt % (i + 1);        // range 0 to i 
         
-        // 交换 blocks[i] 和 blocks[j]
-        char temp = blocks[i];
-        blocks[i] = blocks[j];
-        blocks[j] = temp;
+        // switch_blocks[i] 和 blocks[j]
+        temp = Blocks[i];
+        Blocks[i] = Blocks[j];
+        Blocks[j] = temp;
     }
-    return blocks
 }
 
 void turn_blocks_number(u16 blocks[7])
@@ -33,5 +35,4 @@ void turn_blocks_number(u16 blocks[7])
         cnt = blocks[i];
         random_block_generator();
     }
-    //结束了就重新generate一遍，不晓得是什么thread，请饱饱统筹
 }

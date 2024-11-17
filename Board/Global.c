@@ -25,3 +25,6 @@ u16 joypadkey[8];
 u8 key_count;
 u16 joypad_timer,joypad_timer_max;
 u8 tmp;
+u16 Blocks[14]={0,1,2,3,4,5,6,4,2,1,3,5,6,4};
+u16 Bag7cnt = 0;
+u16 PRE_block[4][4];

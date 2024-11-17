@@ -24,4 +24,7 @@ extern u16 joypadkey[8];
 extern u8 key_count;
 extern u16 joypad_timer,joypad_timer_max;
 extern u8 tmp;
+extern u16 Blocks[14];
+extern u16 Bag7cnt;
+extern u16 PRE_block[4][4];
 #endif
