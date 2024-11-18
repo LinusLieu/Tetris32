@@ -108,13 +108,20 @@ int main(void)
 	u8 centy[12] = {35,69,78,84,69,82,63,57,0,0,0,0};
 	u8 cov[12] = {67,79,78,86,0,0,0,0,0,0,0,0};
 	u8 press[12] = {43,69,89,29,0,0,0,0,0,0,0,0};
-	u8 tmp;
-	thread = 8;
-	tmpthread = 1;
-	
-	DAS = 1.5f;
-	block_pos_x = 4;
-	block_pos_y = 10;
+	u8 tmp,tmp2;
+
+	direction = 0;
+	DAS = 15;
+	block_generate_pos_x = 4;
+	block_generate_pos_y = 18;
+	ASP = 20;
+
+	block_pos_x = block_generate_pos_x;
+	block_pos_y = block_generate_pos_y;
+
+	shift_delay = 1000;
+	shift_DAS = 1000 / DAS;
+
 	IERG3810_SYSTICK_Init10ms();
 	IERG3810_clock_tree_init();
 	IERG3810_TFTLCD_Init();
@@ -129,18 +136,11 @@ int main(void)
 	Joypad_Latch_ExtiInit();
 	Joypad_Clock_ExtiInit();
 	
-	RCC->APB2ENR |= 0x00000024;
-    GPIOB->CRH &= 0xFFFF00FF;
-    GPIOB->CRH |= 0xFFFF38FF;
-    GPIOD->CRL &= 0xFFFF0FFF;
-    GPIOD->CRL |= 0x00003000;
-
-    GPIOB->ODR &= 0xFFFFFDFF;
-    GPIOB->ODR |= 0x00000400;
-
-	direction = 0;
 	
-	IERG3810_TIM3_Init(10000,7199);
+
+	
+	
+	IERG3810_TIM3_Init(14399 / DAS * 10,7199);
 	//IERG3810_TIM4_Init(5000,7199);
 	
 	Delay(1000000);
@@ -153,7 +153,7 @@ int main(void)
 	block[1][1] = 3;
 	block[2][1] = 3;
 	
-	Playfield_init();
+
 
 	for(i = 0;i<12;i++)
 	{
@@ -166,7 +166,9 @@ int main(void)
 		
 	}
 
-  Delay(1000000);
+
+	Playfield_init();
+  	Delay(1000000);
 	Draw_playfield();
 	Delay(1000000);
 	Draw_block();
@@ -267,9 +269,9 @@ int main(void)
 				}*/
 	if (task1HeartBeat >= 10)
 		{
+			
 			if(block_pos_y_movement != 0){
 				tmp = Bottom_check_conv();
-				
 				cov[9] = (tmp >> 4) & 0xF;
 				cov[10] = tmp & 0xF;
 				for(i = 9;i<11;i++)
@@ -277,7 +279,9 @@ int main(void)
 					IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+48,0xFFFF,0x0000);
 				}
 				Draw_update();
+
 			}
+
 			if(block_pos_x_movement_tmp != 0){
 				tmp = Shift_check();
 				cov[9] = (tmp >> 4) & 0xF;
@@ -288,7 +292,11 @@ int main(void)
 				}
 				
 			}
+
 		}
+	
+		
+	
 	Joypad_sendpulse();
 	Joypad_input_recog();
 	for(i = 0;i<8;i++){
@@ -299,6 +307,7 @@ int main(void)
 		}
 	}
 	IERG3810_TFTLCD_ShowChar(10 * 1,10,block_pos_x_movement_tmp + 1 + 48,0xFFFF	,0x0000);
-	}
 	
+	
+	}
 }

@@ -5,4 +5,5 @@
 
 void IERG3810_TIM3_Init(u16 arr,u16 psc);
 void IERG3810_TIM4_Init(u16 arr,u16 psc);
+void IERG3810_TIM3_NewARR(u16 arr);
 #endif

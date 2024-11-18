@@ -13,6 +13,7 @@ T:violet:	0X8010
 */
 //draw acomplishment
 
+//Return the Color value of Playfield and Block
 u16 switch_color(u16 type)
 {
 	switch (type)
@@ -42,6 +43,7 @@ u16 switch_color(u16 type)
 	}
 }
 
+//For dawing the elements in each block
 void IERG3810_Draw_DrawSquare(u16 color, u16 start_x, u16 start_y)
 {
 	u32 index = 0;
@@ -62,6 +64,7 @@ void IERG3810_Draw_DrawSquare(u16 color, u16 start_x, u16 start_y)
 	}
 }
 
+//Drawing the whole playfield, for first-time setup (and old-version block update), waste a significant performance loss
 void Draw_playfield(void)
 {
 	int i = 0, j = 0;
@@ -76,6 +79,7 @@ void Draw_playfield(void)
 	}
 }
 
+//Drawing the previous state of the block (better performance)
 void Draw_playfield_2(void)
 {
 	int i = 0, j = 0;
@@ -92,6 +96,7 @@ void Draw_playfield_2(void)
 	}
 }
 
+//Yeah...It's for drawing the block
 void Draw_block(void)
 {
 	int i = 0, j = 0;
@@ -100,8 +105,9 @@ void Draw_block(void)
 	{
 		for(j = 0; j < 4; j++)
 		{
-			//if(block_pos_x+i+1 > 0 && block_pos_x+i < 10){
+			//To limit the drawing range (Special design of the playfield)
 			if(block_pos_x+(1-block_center_x)+i > 0 && block_pos_x+(1-block_center_x)+i < 11 && block_pos_y+(2-block_center_y) + j > 2 && block_pos_y +(2-block_center_y)+ j < 28){
+			
 			if(block[i][j]){
 				color = switch_color(block[i][j]);
 			}else{
@@ -113,6 +119,7 @@ void Draw_block(void)
 	}
 }
 
+//Actually, the playfield is 10*20, but we add 4 more blocks on the left, right and bottom for edge detect, and 4 more on the top for generate blocks
 void Playfield_init(void){
 	int i,j;
 

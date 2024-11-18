@@ -43,8 +43,8 @@ int Bottom_check_conv(void)
         //thread = 5;
         insert_block();
         random_block_generator();
-				block_pos_x = 4;
-				block_pos_y = 10;
+				block_pos_x = block_generate_pos_x;
+				block_pos_y = block_generate_pos_y;
         return conv;
     }else{
     block_pos_x_pre = block_pos_x;
@@ -76,25 +76,4 @@ void insert_block(void)
         }
     }
     if(iso)iso = 0;
-    thread = 3;
 }
-
-/*
-void Block_movement(u8 movement){
-    int move = 0;
-
-    int i = 0, j = 0;
-    for(i = 0; i < 4; i++){
-        for(j = 0; j < 4; j++){
-            if(block[i][j] != 0){
-                if(Playfield[block_pos_x-1+i][block_pos_y-1+j] != 0){
-                    return 1;
-                }else{
-                    return 0;
-                }
-            }
-            
-        }
-    }
-}
-*/

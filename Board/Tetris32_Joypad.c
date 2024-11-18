@@ -8,8 +8,11 @@ void Joypad_init(void){
     GPIOC->CRH |= 0x00030083;
     GPIOC->ODR &= 0xFFFFFDFF;
     GPIOC->ODR |= 0x00000200;
-    
-    /*RCC->APB2ENR |= 0x00000024;
+
+    /*
+    //These part init for v3 Board
+
+    RCC->APB2ENR |= 0x00000024;
     GPIOB->CRH &= 0xFFFF00FF;
     GPIOB->CRH |= 0xFFFF38FF;
     GPIOD->CRL &= 0xFFFF0FFF;
@@ -18,6 +21,7 @@ void Joypad_init(void){
     GPIOB->ODR &= 0xFFFFFDFF;
     GPIOB->ODR |= 0x00000400;*/
 }
+
 
 void Joypad_Latch_ExtiInit(void)
 {
@@ -54,67 +58,97 @@ void Joypad_Clock_ExtiInit(void)
 
 void Joypad_input_recog(void){
     u8 i;
-    IERG3810_DS1(pressed[6]);
+    u8 LED_temp = 0;
+    u8 tmp;
+
+    
+    //To show if there has any key been pressed though DS1
+    for(i = 0;i<8;i++){
+        if(pressed[i])
+        LED_temp += pressed[i];
+    }
+    IERG3810_DS1(LED_temp);
+    
+    //IERG3810_DS1(pressed[5]);
+
+    //Key 7 for moving left
     if(!joypadkey[6]){
         if(pressed[6] == 0){
         block_pos_x_movement_tmp = -1;
         pressed[6] = 1;
+        }else{
+            shift_delay_cnt++;
+        }
+        if(shift_delay_cnt >= shift_delay){
+            if(shift_DAS_cnt > shift_DAS){
+                block_pos_x_movement_tmp = -1;
+                shift_DAS_cnt = 0;
+            }else{
+                shift_DAS_cnt++;
+            }
+            shift_delay_cnt = shift_delay;
         }
     }else{
-        pressed[6] = 0;
+        if(pressed[6]){
+            shift_delay_cnt = 0;
+            shift_DAS_cnt = 0;
+            pressed[6] = 0;
         }
+        
+        }
+
+    //Key 8 for moving right
     if(!joypadkey[7]){
        if(pressed[7] == 0){
         block_pos_x_movement_tmp = 1;
         pressed[7] = 1;
+        }else{
+            shift_delay_cnt++;
+        }
+        if(shift_delay_cnt >= shift_delay){
+            if(shift_DAS_cnt > shift_DAS){
+                block_pos_x_movement_tmp = 1;
+                shift_DAS_cnt = 0;
+            }else{
+                shift_DAS_cnt++;
+            }
+            shift_delay_cnt = shift_delay;
         }
     }else{
-        pressed[7] = 0;
+        if(pressed[7]){
+            shift_delay_cnt = 0;
+            shift_DAS_cnt = 0;
+            pressed[7] = 0;
         }
+        
+        }
+
+    //for softdrop
+    if(!joypadkey[5]){
+        if(pressed[5] == 0){
+        IERG3810_TIM3_NewARR(14399 / ASP);	
+        pressed[5] = 1;
+        }
+    }else{
+        if(pressed[5] == 1){
+        IERG3810_TIM3_NewARR(14399  / DAS * 10);	
+        pressed[5] = 0;
+        }
+        
+    }
+
+    //Key 1 for rotate clockwise (not finished)
     if(!joypadkey[0]){
         thread = 7;
     }
-    /*
-    if(!joypadkey[6]){
-        if(!joypad_timer){
-        block_pos_x_movement_tmp = -1;
-        joypad_timer++;
-	    thread = 4;
-        }else if(joypad_timer > joypad_timer_max){
-            if(!(ARR_Timer % 20)){
-                block_pos_x_movement_tmp = -1;
-	            thread = 4;
-            }
-            ARR_Timer++;
-        }
-    }else{
-        joypad_timer = 0;
-        ARR_Timer = 0;
-    }
-    if(!joypadkey[7]){
-        if(!joypad_timer){
-        block_pos_x_movement_tmp = 1;
-        joypad_timer++;
-	    thread = 4;
-        }else if(joypad_timer > joypad_timer_max){
-            if(!(ARR_Timer % 20)){
-                block_pos_x_movement_tmp = 1;
-	            thread = 4;
-            }
-            ARR_Timer++;
-        }
-    }else{
-        joypad_timer = 0;
-        ARR_Timer = 0;
-    }
-    */
+   
 }
 
 void Joypad_sendpulse(void){
     u8 i;
 	key_count = 0;
 	GPIOC->BSRR |= 1 << 8;
-	Delay(1 );
+	Delay(1);
 	GPIOC->BRR |= 1 << 8;
 	Delay(1);
 	for(i = 0;i<8;i++){

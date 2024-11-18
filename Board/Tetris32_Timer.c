@@ -25,3 +25,10 @@ void IERG3810_TIM4_Init(u16 arr,u16 psc)
 	NVIC->IP[30] = 0x45;					//refer to lab-4, DDI0337E
 	NVIC->ISER[0] |= (1<<30);			//refer to lab-4, DDI0337E
 }
+
+void IERG3810_TIM3_NewARR(u16 arr){
+    TIM3->CR1 &= ~(1 << 0);
+    TIM3->CNT = 0;
+    TIM3->ARR = arr;
+    TIM3->CR1 |= 1 << 0;
+}
