@@ -11,11 +11,9 @@ int Shift_check(void)
     block_pos_x_movement_tmp = 0;
     for(i = 0; i < 4; i++){
         for(j = 0; j < 4; j++){
-            conv += Playfield[block_pos_x+(1-block_center_x)+i+block_pos_x_movement+3][block_pos_y+(2-block_center_y)+j+1] * block[i][j];
+            conv += Playfield[block_pos_x-block_center_x+i+block_pos_x_movement+4][block_pos_y-block_center_y+j+4] * block[i][j];
         }
     }
-    USART_print_int(2,0xFF);
-    USART_print_int(2,conv);
     if(conv){
         block_pos_x_movement = 0;
         return conv;
@@ -24,7 +22,6 @@ int Shift_check(void)
     block_pos_y_pre = block_pos_y;
     block_pos_x += block_pos_x_movement;
     block_pos_x_movement = 0;
-    Draw_update();
     return conv;
     }
 }
@@ -35,7 +32,7 @@ int Bottom_check_conv(void)
     int i = 0, j = 0;
     for(i = 0; i < 4; i++){
         for(j = 0; j < 4; j++){
-            conv += Playfield[block_pos_x+(1-block_center_x)+i+3][block_pos_y+(2-block_center_y)+j+block_pos_y_movement+1] * block[i][j];
+            conv += Playfield[block_pos_x-block_center_x+i+4][block_pos_y-block_center_y+j+block_pos_y_movement+4] * block[i][j];
         }
     }
     if(conv){
@@ -56,6 +53,23 @@ int Bottom_check_conv(void)
     }
 }
 
+int Rotate_check(void)
+{   
+    int conv = 0;
+    int i = 0, j = 0;
+
+    for(i = 0; i < 4; i++){
+        for(j = 0; j < 4; j++){
+            conv += Playfield[block_pos_x-block_center_x+i+4][block_pos_y-block_center_y+j+4] * rotate_block[i][j];
+        }
+    }
+    if(conv){
+        return conv;
+    }else{
+    return conv;
+    }
+}
+
 void insert_block(void)
 {
     int i = 0,j = 0;  
@@ -64,7 +78,7 @@ void insert_block(void)
         for(j = 0; j < 4; j++)
         {
             if(block[i][j])
-            Playfield[block_pos_x+(1-block_center_x)+i+3][block_pos_y+(2-block_center_y)+j+1] = block[i][j];
+            Playfield[block_pos_x-block_center_x+i+4][block_pos_y-block_center_y+j+4] = block[i][j];
         }
     }
 

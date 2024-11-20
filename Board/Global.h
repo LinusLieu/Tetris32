@@ -3,8 +3,9 @@
 #include "stm32f10x.h"
 
 extern u16 randnum;
-extern u16 Playfield[18][28];
+extern u16 Playfield[18][26];
 extern u16 block[4][4];
+extern u16 rotate_block[4][4];
 extern u8 seven_bag[7];
 extern u8 seven_bag_2[7];
 extern u8 DAS,ARR;

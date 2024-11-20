@@ -1,6 +1,7 @@
 #include "stm32f10x.h"
 #include "Global.h"
 #include "Tetris32_Joypad.h"
+#include "Tetris32_SRS.h"
 
 void Joypad_init(void){
     RCC->APB2ENR |= 1 << 4;
@@ -126,20 +127,46 @@ void Joypad_input_recog(void){
     //for softdrop
     if(!joypadkey[5]){
         if(pressed[5] == 0){
-        IERG3810_TIM3_NewARR(14399 / ASP);	
+        block_pos_y_movement = -1;
+        //IERG3810_TIM3_NewARR(14399 / ASP);	
         pressed[5] = 1;
         }
     }else{
         if(pressed[5] == 1){
-        IERG3810_TIM3_NewARR(14399  / DAS * 10);	
+
+        //IERG3810_TIM3_NewARR(14399  / DAS * 10);	
         pressed[5] = 0;
+        }
+        
+    }
+
+
+    if(!joypadkey[4]){
+        if(pressed[4] == 0){
+        block_pos_y_movement = 1;
+        //IERG3810_TIM3_NewARR(14399 / ASP);	
+        pressed[4] = 1;
+        }
+    }else{
+        if(pressed[4] == 1){
+
+        //IERG3810_TIM3_NewARR(14399  / DAS * 10);	
+        pressed[4] = 0;
         }
         
     }
 
     //Key 1 for rotate clockwise (not finished)
     if(!joypadkey[0]){
-        thread = 7;
+        if(pressed[0] == 0){
+        rotate_clockwise();
+        pressed[0] = 1;
+        }
+    }else{
+        if(pressed[0] == 1){
+        pressed[0] = 0;
+        }
+        
     }
    
 }

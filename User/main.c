@@ -34,9 +34,11 @@ void TIM3_IRQHandler(void)
 {
 	if(TIM3->SR & 1<<0)				//check UIF, RM0008 page-410
 	{
+		/*
 		IERG3810_DS0(1);
 		block_pos_y_movement = -1;
 		IERG3810_DS0(0);
+		*/
 	}
 	TIM3->SR &= ~(1<<0);			//clear UIF, RM0008 page-410
 	
@@ -111,7 +113,7 @@ int main(void)
 	u8 tmp,tmp2;
 
 	direction = 0;
-	DAS = 15;
+	DAS = 20;
 	block_generate_pos_x = 4;
 	block_generate_pos_y = 18;
 	ASP = 20;
@@ -148,10 +150,10 @@ int main(void)
 	Delay(1000000);
 	IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
 
-	block[1][0] = 3;
-	block[2][0] = 3;
-	block[1][1] = 3;
-	block[2][1] = 3;
+	block[1][3] = 3;
+	block[2][3] = 3;
+	block[1][2] = 3;
+	block[2][2] = 3;
 	
 
 
@@ -267,7 +269,7 @@ int main(void)
 						IERG3810_TFTLCD_ShowChar(10 * (1+i+4),30,48,0x0000,0x0000);
 					}
 				}*/
-	if (task1HeartBeat >= 10)
+	if (task1HeartBeat % 10 == 0)
 		{
 			
 			if(block_pos_y_movement != 0){
@@ -290,12 +292,36 @@ int main(void)
 				{
 					IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+48,0xFFFF,0x0000);
 				}
+				Draw_update();
 				
 			}
 
 		}
 	
-		
+	if(task1HeartBeat % 20 == 0){
+				
+				task1HeartBeat = 0;
+				Draw_update();
+				IERG3810_Draw_DrawSquare(0xFFFF, 80+(block_pos_x-block_center_x)*8, (block_pos_y-block_center_y)*8+64);
+				IERG3810_Draw_DrawSquare(0xF81F, 80+(block_pos_x)*8, (block_pos_y)*8+64);
+	}
+
+	posx[9] = block_pos_x / 10 % 10;
+	posx[10] = block_pos_x % 10;
+	posy[9] = block_pos_y / 10 % 10;
+	posy[10] = block_pos_y % 10;
+	centx[9] = block_center_x / 10 % 10;
+	centx[10] = block_center_x % 10;
+	centy[9] = block_center_y / 10 % 10;
+	centy[10] = block_center_y % 10;
+	for(i = 9;i<11;i++)
+	{
+		IERG3810_TFTLCD_ShowChar(10 * (1+i),300,posx[i]+48,0xFFFF,0x0000);
+		IERG3810_TFTLCD_ShowChar(10 * (1+i)+120,300,posy[i]+48,0xFFFF,0x0000);
+		IERG3810_TFTLCD_ShowChar(10 * (1+i),280,centx[i]+48,0xFFFF,0x0000);
+		IERG3810_TFTLCD_ShowChar(10 * (1+i)+120,280,centy[i]+48,0xFFFF,0x0000);
+	}
+
 	
 	Joypad_sendpulse();
 	Joypad_input_recog();

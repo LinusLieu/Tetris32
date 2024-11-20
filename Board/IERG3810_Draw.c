@@ -71,7 +71,7 @@ void Draw_playfield(void)
 	int color = 0;
 	for(i = 4; i < 14; i++)
 	{
-		for(j = 4; j < 28; j++)
+		for(j = 4; j < 24; j++)
 		{
 			color = switch_color(Playfield[i][j]);
 			IERG3810_Draw_DrawSquare(color, 80+(i-4)*8, (j-4)*8+64);
@@ -88,9 +88,9 @@ void Draw_playfield_2(void)
 	{
 		for(j = 0; j < 4; j++)
 		{
-			if(block_pos_x_pre+(1-block_center_x)+i > 0 && block_pos_x_pre+(1-block_center_x)+i < 11 && block_pos_y_pre+(2-block_center_y) + j > 2 && block_pos_y_pre +(2-block_center_y)+ j < 28){
-				color = switch_color(Playfield[block_pos_x_pre+(1-block_center_x)+i+3][block_pos_y_pre+(2-block_center_y)+j+1]);
-				IERG3810_Draw_DrawSquare(color, 80+(block_pos_x_pre+(1-block_center_x)+i-1)*8, (block_pos_y_pre+(2-block_center_y)+j-3)*8+64);
+			if(block_pos_x_pre-block_center_x+i >= 0 && block_pos_x_pre-block_center_x+i < 10 && block_pos_y_pre-block_center_y + j >= 0 && block_pos_y_pre -block_center_y+ j < 26){
+				color = switch_color(Playfield[block_pos_x_pre-block_center_x+i+4][block_pos_y_pre-block_center_y+j+4]);
+				IERG3810_Draw_DrawSquare(color, 80+(block_pos_x_pre-block_center_x+i)*8, (block_pos_y_pre-block_center_y+j)*8+64);
 			}
 		}
 	}
@@ -106,14 +106,14 @@ void Draw_block(void)
 		for(j = 0; j < 4; j++)
 		{
 			//To limit the drawing range (Special design of the playfield)
-			if(block_pos_x+(1-block_center_x)+i > 0 && block_pos_x+(1-block_center_x)+i < 11 && block_pos_y+(2-block_center_y) + j > 2 && block_pos_y +(2-block_center_y)+ j < 28){
+			if(block_pos_x-block_center_x+i >= 0 && block_pos_x-block_center_x+i < 10 && block_pos_y-block_center_y + j >= 0 && block_pos_y -block_center_y+ j < 26){
 			
 			if(block[i][j]){
 				color = switch_color(block[i][j]);
 			}else{
-				color = switch_color(Playfield[block_pos_x+(1-block_center_x)+i+3][block_pos_y+(2-block_center_y)+j+1]);
+				color = switch_color(Playfield[block_pos_x-block_center_x+i+4][block_pos_y-block_center_y+j+4]);
 			}
-			IERG3810_Draw_DrawSquare(color, 80+(block_pos_x+(1-block_center_x)+i-1)*8, (block_pos_y+(2-block_center_y)+j-3)*8+64);
+			IERG3810_Draw_DrawSquare(color, 80+(block_pos_x-block_center_x+i)*8, (block_pos_y-block_center_y+j)*8+64);
 			}
 		}
 	}
@@ -124,7 +124,7 @@ void Playfield_init(void){
 	int i,j;
 
 	for(i = 0;i<18;i++){
-		for(j = 0;j<28;j++){
+		for(j = 0;j<26;j++){
 			Playfield[i][j] = 100;
 		}
 	}
@@ -134,7 +134,7 @@ void Playfield_init(void){
 		{
 			Playfield[i][j] = 0;
 		}
-		for(j = 24; j < 28; j++)
+		for(j = 24; j < 26; j++)
 		{
 			Playfield[i][j] = 12;
 		}
