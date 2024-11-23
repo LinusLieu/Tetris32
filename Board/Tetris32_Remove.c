@@ -17,7 +17,6 @@ void remove(void)
         }
         if(sum < 10)
             continue;
-				
         record = j;
         for(i = 4; i < 14; i++)
         {
@@ -35,5 +34,6 @@ void remove(void)
             }
         }
         j = record - 1; // 从消除位置重新开始
+        Draw_playfield();
     }
 }

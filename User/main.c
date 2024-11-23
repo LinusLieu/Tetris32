@@ -29,21 +29,22 @@ void Delay(u32 count)
 	for (i=0;i<count;i++);
 }
 
-
+//For autodrop
 void TIM3_IRQHandler(void)
 {
 	if(TIM3->SR & 1<<0)				//check UIF, RM0008 page-410
 	{
-		/*
+		
 		IERG3810_DS0(1);
 		block_pos_y_movement = -1;
 		IERG3810_DS0(0);
-		*/
+		
 	}
 	TIM3->SR &= ~(1<<0);			//clear UIF, RM0008 page-410
 	
 }
 
+//For nothing
 void TIM4_IRQHandler(void)
 {
 	if(TIM4->SR & 1<<0)				//check UIF, RM0008 page-410
@@ -80,7 +81,7 @@ void EXTI2_IRQHandler(void){
 
 void EXTI0_IRQHandler(void)
 {
-	thread = 7;
+	debug++;
 	EXTI->PR = 0x00000001;	//Clear this exception pending bit
 }
 
@@ -302,8 +303,8 @@ int main(void)
 				
 				task1HeartBeat = 0;
 				Draw_update();
-				IERG3810_Draw_DrawSquare(0xFFFF, 80+(block_pos_x-block_center_x)*8, (block_pos_y-block_center_y)*8+64);
-				IERG3810_Draw_DrawSquare(0xF81F, 80+(block_pos_x)*8, (block_pos_y)*8+64);
+				//IERG3810_Draw_DrawSquare(0xFFFF, 80+(block_pos_x-block_center_x)*8, (block_pos_y-block_center_y)*8+64);
+				//IERG3810_Draw_DrawSquare(0xF81F, 80+(block_pos_x)*8, (block_pos_y)*8+64);
 	}
 
 	posx[9] = block_pos_x / 10 % 10;

@@ -40,8 +40,13 @@ int Bottom_check_conv(void)
         //thread = 5;
         insert_block();
         random_block_generator();
-				block_pos_x = block_generate_pos_x;
-				block_pos_y = block_generate_pos_y;
+		block_pos_x = block_generate_pos_x;
+		block_pos_y = block_generate_pos_y;
+        block_center_offset_x = 0;
+        block_center_offset_y = 0;
+        block_center_x = 1;
+        block_center_y = 2;
+        direction = 0;
         return conv;
     }else{
     block_pos_x_pre = block_pos_x;
@@ -53,21 +58,33 @@ int Bottom_check_conv(void)
     }
 }
 
+int conv_check(void)
+{   
+    int conv = 0;
+    int i = 0, j = 0;
+    for(i = 0; i < 4; i++){
+        for(j = 0; j < 4; j++){
+            conv += Playfield[block_pos_x-block_center_x+i+4][block_pos_y-block_center_y+j+4] * block[i][j];
+        }
+    }
+    return conv;
+}
+
 int Rotate_check(void)
 {   
     int conv = 0;
     int i = 0, j = 0;
-
+    u8 tmp1,tmp2;
     for(i = 0; i < 4; i++){
         for(j = 0; j < 4; j++){
-            conv += Playfield[block_pos_x-block_center_x+i+4][block_pos_y-block_center_y+j+4] * rotate_block[i][j];
+            conv += Playfield[block_pos_x-block_center_x+block_center_offset_x+i+4][block_pos_y-block_center_y+block_center_offset_y+j+4] * block[i][j];
         }
     }
-    if(conv){
-        return conv;
-    }else{
+    tmp1 = conv / 10 % 10;
+    tmp2 = conv % 10;
+    IERG3810_TFTLCD_ShowChar(10,60,tmp1+48,0xFFFF,0x0000);
+    IERG3810_TFTLCD_ShowChar(20,60,tmp2+48,0xFFFF,0x0000);
     return conv;
-    }
 }
 
 void insert_block(void)
@@ -90,4 +107,5 @@ void insert_block(void)
         }
     }
     if(iso)iso = 0;
+    remove();
 }

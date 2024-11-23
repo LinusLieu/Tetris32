@@ -4,4 +4,5 @@
 #include "stm32f10x.h"
 
 void rotate_clockwise(void);
+void rotate_anticlockwise(void);
 #endif

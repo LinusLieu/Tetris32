@@ -62,7 +62,12 @@ void Joypad_input_recog(void){
     u8 LED_temp = 0;
     u8 tmp;
 
-    
+    //Key 7 for right
+    //Key 6 for left
+    //key 5 for down
+    //key 4 for up
+
+
     //To show if there has any key been pressed though DS1
     for(i = 0;i<8;i++){
         if(pressed[i])
@@ -127,14 +132,14 @@ void Joypad_input_recog(void){
     //for softdrop
     if(!joypadkey[5]){
         if(pressed[5] == 0){
-        block_pos_y_movement = -1;
-        //IERG3810_TIM3_NewARR(14399 / ASP);	
+        //block_pos_y_movement = -1;  //For debug , moving down
+        IERG3810_TIM3_NewARR(14399 / ASP);	
         pressed[5] = 1;
         }
     }else{
         if(pressed[5] == 1){
 
-        //IERG3810_TIM3_NewARR(14399  / DAS * 10);	
+        IERG3810_TIM3_NewARR(14399  / DAS * 10);	
         pressed[5] = 0;
         }
         
@@ -143,7 +148,7 @@ void Joypad_input_recog(void){
 
     if(!joypadkey[4]){
         if(pressed[4] == 0){
-        block_pos_y_movement = 1;
+        //block_pos_y_movement = 1;   //For debug , moving up
         //IERG3810_TIM3_NewARR(14399 / ASP);	
         pressed[4] = 1;
         }
@@ -165,6 +170,19 @@ void Joypad_input_recog(void){
     }else{
         if(pressed[0] == 1){
         pressed[0] = 0;
+        }
+        
+    }
+
+    //Key 2 for rotate anti-clockwise (not finished)
+    if(!joypadkey[1]){
+        if(pressed[1] == 0){
+        rotate_anticlockwise();
+        pressed[1] = 1;
+        }
+    }else{
+        if(pressed[1] == 1){
+        pressed[1] = 0;
         }
         
     }
