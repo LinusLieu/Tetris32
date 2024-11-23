@@ -180,133 +180,59 @@ int main(void)
 
 	while(1)
 	{
-		//USART_print_int(2,thread);
 		cnt++;
-		/*
-		switch(thread){
-			case 1:
-				Block_autoDrop();
-				break;
-			case 2:
-				tmp = Bottom_check_conv();		//goto thread 5
-				cov[9] = (tmp >> 4) & 0xF;
-				cov[10] = tmp & 0xF;
-				for(i = 9;i<11;i++)
-				{
-					IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+48,0xFFFF,0x0000);
-				}
-				break;
-			case 3:
-				USART_print_int(2,0xAA);
-				USART_print_int(2,block_pos_x);
-				USART_print_int(2,block_pos_y);
-				posx[9] = (block_pos_x >> 4) & 0xF;
-				posx[10] = block_pos_x & 0xF;
-				posy[9] = (block_pos_y >> 4) & 0xF;
-				posy[10] = block_pos_y & 0xF;
-				for(i = 9;i<11;i++)
-				{
-					IERG3810_TFTLCD_ShowChar(10 * (1+i),300,posx[i]+48,0xFFFF,0x0000);
-					IERG3810_TFTLCD_ShowChar(10 * (1+i)+120,300,posy[i]+48,0xFFFF,0x0000);
-				}
-				for(i = 0;i<8;i++){
-					if(!joypadkey[i]){
-						IERG3810_TFTLCD_ShowChar(10 * (1+i+4),30,i+48+1,0xFFFF,0x0000);
-					}else{
-						IERG3810_TFTLCD_ShowChar(10 * (1+i+4),30,48,0x0000,0x0000);
-					}
-				}
-				Delay(100000);
-	      		Draw_playfield_2();
-				Delay(100000);
-	      		Draw_block();
-				thread = 8;
-				break;
-			case 4:
-				tmp = Shift_check();
-				cov[9] = (tmp >> 4) & 0xF;
-				cov[10] = tmp & 0xF;
-				for(i = 9;i<11;i++)
-				{
-					IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+48,0xFFFF,0x0000);
-				}
-				break;
-			case 5:
-				insert_block();
-				thread = 6;
-				break;
-			case 6:
-				USART_print_int(2,0xAF);
-				random_block_generator();
-				block_pos_x = 4;
-				block_pos_y = 10;
-				thread = 1;
-				break;
-			case 7:
-				rotate_clockwise();
-				thread = 4;
-			case 8:	//joypad input
-				Joypad_sendpulse();
-				Joypad_input_recog();
-				//thread = tmpthread;
-				thread = 1;
-				break;
-			default:
-				break;
+	if(state == 0){
+		//For Default menu
+	}else if{state == 1}{
+		if(gamemode == 1){
+			//For 40 Lines
+
 		}
+		if(gamemode == 2){
+			//For Blitz
+
+		}
+		if (task1HeartBeat % 10 == 0)
+			{
+				
+				if(block_pos_y_movement != 0){
+					tmp = Bottom_check_conv();
+					cov[9] = (tmp >> 4) & 0xF;
+					cov[10] = tmp & 0xF;
+					for(i = 9;i<11;i++)
+					{
+						IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+48,0xFFFF,0x0000);
+					}
+					Draw_update();
+
+				}
+
+				if(block_pos_x_movement_tmp != 0){
+					tmp = Shift_check();
+					cov[9] = (tmp >> 4) & 0xF;
+					cov[10] = tmp & 0xF;
+					for(i = 9;i<11;i++)
+					{
+						IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+48,0xFFFF,0x0000);
+					}
+					Draw_update();
+					
+				}
+
+			}
 		
-		cov[9] = (tmp >> 4) & 0xF;
-	cov[10] = tmp & 0xF;
-	for(i = 9;i<11;i++)
-	{
-		IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+48,0xFFFF,0x0000);
-	}
-	Joypad_sendpulse();
-	Joypad_input_recog();
-	for(i = 0;i<8;i++){
-					if(!joypadkey[i]){
-						IERG3810_TFTLCD_ShowChar(10 * (1+i+4),30,i+48+1,0xFFFF,0x0000);
-					}else{
-						IERG3810_TFTLCD_ShowChar(10 * (1+i+4),30,48,0x0000,0x0000);
-					}
-				}*/
-	if (task1HeartBeat % 10 == 0)
-		{
-			
-			if(block_pos_y_movement != 0){
-				tmp = Bottom_check_conv();
-				cov[9] = (tmp >> 4) & 0xF;
-				cov[10] = tmp & 0xF;
-				for(i = 9;i<11;i++)
-				{
-					IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+48,0xFFFF,0x0000);
-				}
-				Draw_update();
-
-			}
-
-			if(block_pos_x_movement_tmp != 0){
-				tmp = Shift_check();
-				cov[9] = (tmp >> 4) & 0xF;
-				cov[10] = tmp & 0xF;
-				for(i = 9;i<11;i++)
-				{
-					IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+48,0xFFFF,0x0000);
-				}
-				Draw_update();
-				
-			}
-
+		if(task1HeartBeat % 20 == 0){
+					
+					task1HeartBeat = 0;
+					Draw_update();
+					//IERG3810_Draw_DrawSquare(0xFFFF, 80+(block_pos_x-block_center_x)*8, (block_pos_y-block_center_y)*8+64);
+					//IERG3810_Draw_DrawSquare(0xF81F, 80+(block_pos_x)*8, (block_pos_y)*8+64);
 		}
-	
-	if(task1HeartBeat % 20 == 0){
-				
-				task1HeartBeat = 0;
-				Draw_update();
-				//IERG3810_Draw_DrawSquare(0xFFFF, 80+(block_pos_x-block_center_x)*8, (block_pos_y-block_center_y)*8+64);
-				//IERG3810_Draw_DrawSquare(0xF81F, 80+(block_pos_x)*8, (block_pos_y)*8+64);
+	}else if{state == 2}
+		//For death page
 	}
 
+	////////////////////////For data display///////////////////
 	posx[9] = block_pos_x / 10 % 10;
 	posx[10] = block_pos_x % 10;
 	posy[9] = block_pos_y / 10 % 10;
@@ -322,8 +248,11 @@ int main(void)
 		IERG3810_TFTLCD_ShowChar(10 * (1+i),280,centx[i]+48,0xFFFF,0x0000);
 		IERG3810_TFTLCD_ShowChar(10 * (1+i)+120,280,centy[i]+48,0xFFFF,0x0000);
 	}
-
+	////////////////////////For data display///////////////////
 	
+
+
+	//Call Joypad
 	Joypad_sendpulse();
 	Joypad_input_recog();
 	for(i = 0;i<8;i++){

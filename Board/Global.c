@@ -46,3 +46,4 @@ u16 joypad_timer,joypad_timer_max;
 u8 pressed[8] = {0,0,0,0,0,0,0,0};
 
 u8 debug = 0;
+u8 state = 1,gamemode = 0;

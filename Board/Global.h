@@ -34,4 +34,5 @@ extern u16 PRE_block[4][4];
 extern u8 task1HeartBeat;
 extern u8 pressed[8];
 extern u8 debug;
+extern u8 state,gamemode;
 #endif
