@@ -75,117 +75,157 @@ void Joypad_input_recog(void){
     }
     IERG3810_DS1(LED_temp);
     
-    //IERG3810_DS1(pressed[5]);
-
-    //Key 7 for moving left
-    if(!joypadkey[6]){
-        if(pressed[6] == 0){
-        block_pos_x_movement_tmp = -1;
-        pressed[6] = 1;
-        }else{
-            shift_delay_cnt++;
-        }
-        if(shift_delay_cnt >= shift_delay){
-            if(shift_DAS_cnt > shift_DAS){
-                block_pos_x_movement_tmp = -1;
-                shift_DAS_cnt = 0;
-            }else{
-                shift_DAS_cnt++;
+    //At death or end page
+    if(state == 2 || state == 4 || state == 5){
+        for(i = 0;i<7;i++){
+            if(!joypadkey[i]){
+                state = 0;
             }
-            shift_delay_cnt = shift_delay;
         }
-    }else{
-        if(pressed[6]){
-            shift_delay_cnt = 0;
-            shift_DAS_cnt = 0;
-            pressed[6] = 0;
-        }
-        
-        }
+    }
 
-    //Key 8 for moving right
-    if(!joypadkey[7]){
-       if(pressed[7] == 0){
-        block_pos_x_movement_tmp = 1;
-        pressed[7] = 1;
-        }else{
-            shift_delay_cnt++;
-        }
-        if(shift_delay_cnt >= shift_delay){
-            if(shift_DAS_cnt > shift_DAS){
-                block_pos_x_movement_tmp = 1;
-                shift_DAS_cnt = 0;
+    if(state == 1){
+        //Key 7 for moving left
+        if(!joypadkey[6]){
+            if(pressed[6] == 0){
+            block_pos_x_movement_tmp = -1;
+            pressed[6] = 1;
             }else{
-                shift_DAS_cnt++;
+                shift_delay_cnt++;
             }
-            shift_delay_cnt = shift_delay;
-        }
-    }else{
-        if(pressed[7]){
-            shift_delay_cnt = 0;
-            shift_DAS_cnt = 0;
-            pressed[7] = 0;
-        }
-        
+            if(shift_delay_cnt >= shift_delay){
+                if(shift_DAS_cnt > shift_DAS){
+                    block_pos_x_movement_tmp = -1;
+                    shift_DAS_cnt = 0;
+                }else{
+                    shift_DAS_cnt++;
+                }
+                shift_delay_cnt = shift_delay;
+            }
+        }else{
+            if(pressed[6]){
+                shift_delay_cnt = 0;
+                shift_DAS_cnt = 0;
+                pressed[6] = 0;
+            }
+            
+            }
+
+        //Key 8 for moving right
+        if(!joypadkey[7]){
+        if(pressed[7] == 0){
+            block_pos_x_movement_tmp = 1;
+            pressed[7] = 1;
+            }else{
+                shift_delay_cnt++;
+            }
+            if(shift_delay_cnt >= shift_delay){
+                if(shift_DAS_cnt > shift_DAS){
+                    block_pos_x_movement_tmp = 1;
+                    shift_DAS_cnt = 0;
+                }else{
+                    shift_DAS_cnt++;
+                }
+                shift_delay_cnt = shift_delay;
+            }
+        }else{
+            if(pressed[7]){
+                shift_delay_cnt = 0;
+                shift_DAS_cnt = 0;
+                pressed[7] = 0;
+            }
+            
+            }
+
+        //for softdrop
+        if(!joypadkey[5]){
+            if(pressed[5] == 0){
+            //block_pos_y_movement = -1;  //For debug , moving down
+            IERG3810_TIM3_NewARR(14399 / ASP);	
+            pressed[5] = 1;
+            }
+        }else{
+            if(pressed[5] == 1){
+
+            IERG3810_TIM3_NewARR(14399  / DAS * 10);	
+            pressed[5] = 0;
+            }
+            
         }
 
-    //for softdrop
-    if(!joypadkey[5]){
-        if(pressed[5] == 0){
-        //block_pos_y_movement = -1;  //For debug , moving down
-        IERG3810_TIM3_NewARR(14399 / ASP);	
-        pressed[5] = 1;
-        }
-    }else{
-        if(pressed[5] == 1){
 
-        IERG3810_TIM3_NewARR(14399  / DAS * 10);	
-        pressed[5] = 0;
+        if(!joypadkey[4]){
+            if(pressed[4] == 0){
+            //block_pos_y_movement = 1;   //For debug , moving up
+            //IERG3810_TIM3_NewARR(14399 / ASP);	
+            pressed[4] = 1;
+            }
+        }else{
+            if(pressed[4] == 1){
+
+            //IERG3810_TIM3_NewARR(14399  / DAS * 10);	
+            pressed[4] = 0;
+            }
+            
         }
-        
+
+        //Key 1 for rotate clockwise
+        if(!joypadkey[0]){
+            if(pressed[0] == 0){
+            rotate_clockwise();
+            pressed[0] = 1;
+            }
+        }else{
+            if(pressed[0] == 1){
+            pressed[0] = 0;
+            }
+            
+        }
+
+        //Key 2 for rotate anti-clockwise
+        if(!joypadkey[1]){
+            if(pressed[1] == 0){
+            rotate_anticlockwise();
+            pressed[1] = 1;
+            }
+        }else{
+            if(pressed[1] == 1){
+            pressed[1] = 0;
+            }
+            
+        }
     }
+    
 
-
-    if(!joypadkey[4]){
-        if(pressed[4] == 0){
-        //block_pos_y_movement = 1;   //For debug , moving up
-        //IERG3810_TIM3_NewARR(14399 / ASP);	
-        pressed[4] = 1;
+    //At menu page
+    if(state == 0){
+        //Key 3 for select
+        if(!joypadkey[2]){
+            if(pressed[2] == 0){
+            key_select = 1;
+            pressed[2] = 1;
+            }
+        }else{
+            if(pressed[2] == 1){
+            pressed[2] = 0;
+            }
+            
         }
-    }else{
-        if(pressed[4] == 1){
 
-        //IERG3810_TIM3_NewARR(14399  / DAS * 10);	
-        pressed[4] = 0;
+        //Key 4 for start
+        if(!joypadkey[3]){
+            if(pressed[3] == 0){
+            key_start = 1;
+            pressed[3] = 1;
+            }
+        }else{
+            if(pressed[3] == 1){
+            pressed[3] = 0;
+            }
+            
         }
-        
     }
-
-    //Key 1 for rotate clockwise (not finished)
-    if(!joypadkey[0]){
-        if(pressed[0] == 0){
-        rotate_clockwise();
-        pressed[0] = 1;
-        }
-    }else{
-        if(pressed[0] == 1){
-        pressed[0] = 0;
-        }
-        
-    }
-
-    //Key 2 for rotate anti-clockwise (not finished)
-    if(!joypadkey[1]){
-        if(pressed[1] == 0){
-        rotate_anticlockwise();
-        pressed[1] = 1;
-        }
-    }else{
-        if(pressed[1] == 1){
-        pressed[1] = 0;
-        }
-        
-    }
+    
    
 }
 

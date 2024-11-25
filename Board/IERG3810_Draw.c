@@ -27,7 +27,7 @@ u16 switch_color(u16 type)
 		case 3:
 			return 0XFFE0;
 		case 4:
-			return 0X400;
+			return 0X07E9;
 		case 5:
 			return 0X7FF;
 		case 6:
@@ -37,7 +37,7 @@ u16 switch_color(u16 type)
 		case 8:
 			return 0xFFFF;
 		default:
-			return 0X8410;
+			return 0XF81F;
 		
 		
 	}
@@ -69,6 +69,7 @@ void Draw_playfield(void)
 {
 	int i = 0, j = 0;
 	int color = 0;
+	
 	for(i = 4; i < 14; i++)
 	{
 		for(j = 4; j < 24; j++)
@@ -119,6 +120,33 @@ void Draw_block(void)
 	}
 }
 
+void Draw_Preview_2(void)
+{	
+	int i = 0, j = 0;
+	int color = 0;
+	for(i = 0; i < 4; i++)
+	{
+		for(j = 0; j < 4; j++)
+		{
+			//To limit the drawing range (Special design of the playfield)
+			if(PRE_block[i][j]){
+				color = switch_color(PRE_block[i][j]);
+			}else{
+				color = 0x0000;
+			}
+			IERG3810_Draw_DrawSquare(color, 172+i*8, j*8+64+100);
+		}
+	}
+}
+
+void Draw_Preview_init(void){
+	u8 txt[4] = {78,69,88,84};
+	u8 i;
+	for(i = 0;i<4;i++){
+		IERG3810_TFTLCD_ShowChar(10 * (i)+170,205,txt[i],0xFFFF,0x0000);
+	}
+}
+
 //Actually, the playfield is 10*20, but we add 4 more blocks on the left, right and bottom for edge detect, and 4 more on the top for generate blocks
 void Playfield_init(void){
 	int i,j;
@@ -149,4 +177,41 @@ void Draw_update(void){
 	Delay(50000);
 	Draw_block();
     IERG3810_DS0(0);
+}
+
+void Draw_linecount_40(void){
+	u8 display_linecount[6] = {0,0,0,47,52,48};
+	u8 i;
+	display_linecount[0] = line_count / 100 + 48;
+	display_linecount[1] = (line_count % 100) / 10 + 48;
+	display_linecount[2] = line_count % 10 + 48;
+	for(i = 1;i<6;i++){
+		IERG3810_TFTLCD_ShowChar(10 * (i)+150,64,display_linecount[i],0xFFFF,0x0000);
+	}
+}
+
+void Draw_linecount(void){
+	u8 display_linecount[3];
+	u8 i;
+	display_linecount[0] = line_count / 100;
+	display_linecount[1] = (line_count % 100) / 10;
+	display_linecount[2] = line_count % 10;
+	if(display_linecount[0]){
+			IERG3810_TFTLCD_ShowChar(170,64,display_linecount[i],0xFFFF,0x0000);
+		}
+	for(i = i;i<3;i++){
+		IERG3810_TFTLCD_ShowChar(10 * (i)+170,64,display_linecount[i],0xFFFF,0x0000);
+	}
+}
+
+void Draw_Timer(void){
+	u8 timer[6] = {0,10,0,0,10,0};
+	u8 i;
+	timer[0] = TimerHeartBeat / 1000 / 60;
+	timer[2] = (TimerHeartBeat - timer[0]*60000) / 1000 / 10;
+	timer[3] = (TimerHeartBeat - timer[0]*60000) / 1000 % 10;
+	timer[5] = (TimerHeartBeat % 1000) / 100;
+	for(i = 0;i<6;i++){
+		IERG3810_TFTLCD_ShowChar(10 * i+90,40,timer[i] + 48,0xFFFF,0x0000);
+	}
 }

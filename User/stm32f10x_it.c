@@ -136,6 +136,8 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   task1HeartBeat++;
+	task2HeartBeat++;
+	TimerHeartBeat++;
 }
 
 /******************************************************************************/

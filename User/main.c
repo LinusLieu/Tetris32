@@ -12,6 +12,20 @@
 #include "Tetris32_SRS.h"
 #include "Tetris32_Joypad.h"
 #include "Tetris32_Timer.h"
+#include "Tetris32_Preview.h"
+
+//include the head file of menu and death page here
+//include the head file of menu and death page here
+//include the head file of menu and death page here
+//include the head file of menu and death page here
+//include the head file of menu and death page here
+//include the head file of menu and death page here
+//include the head file of menu and death page here
+//include the head file of menu and death page here
+//include the head file of menu and death page here
+//include the head file of menu and death page here
+
+
 
 /*colors
 Z:red��0XF800
@@ -49,10 +63,7 @@ void TIM4_IRQHandler(void)
 {
 	if(TIM4->SR & 1<<0)				//check UIF, RM0008 page-410
 	{
-		Delay(1000000);
-	Draw_playfield();
-	Delay(1000000);
-	Draw_block();
+
 	}
 	TIM4->SR &= ~(1<<0);			//clear UIF, RM0008 page-410
 }
@@ -60,7 +71,7 @@ void TIM4_IRQHandler(void)
 void IERG3810_SYSTICK_Init10ms(void)
 {
 	SysTick->CTRL = 0;	//clear
-	SysTick->LOAD = 89999;	//What should be filled? Refer to DDI-0337E page 8-10
+	SysTick->LOAD = 8999;	//What should be filled? Refer to DDI-0337E page 8-10
 	SysTick->VAL = 0;
 	SysTick->CTRL |= 0x00000003;	//What should be filled? set internal clock, use interrupt, start count
 }
@@ -111,19 +122,24 @@ int main(void)
 	u8 centy[12] = {35,69,78,84,69,82,63,57,0,0,0,0};
 	u8 cov[12] = {67,79,78,86,0,0,0,0,0,0,0,0};
 	u8 press[12] = {43,69,89,29,0,0,0,0,0,0,0,0};
-	u8 tmp,tmp2;
+	u8 tmp,tmp2,tmp3 = 0;
+	u8 playstate = 0;
+	
+	u8 state_new = 0,game_new = 1;
 
 	direction = 0;
 	DAS = 20;
 	block_generate_pos_x = 4;
 	block_generate_pos_y = 18;
 	ASP = 20;
+	state = 0;
+	gamemode = 1;
 
 	block_pos_x = block_generate_pos_x;
 	block_pos_y = block_generate_pos_y;
 
-	shift_delay = 1000;
-	shift_DAS = 1000 / DAS;
+	shift_delay = 30;
+	shift_DAS = 200 / DAS;
 
 	IERG3810_SYSTICK_Init10ms();
 	IERG3810_clock_tree_init();
@@ -139,25 +155,17 @@ int main(void)
 	Joypad_Latch_ExtiInit();
 	Joypad_Clock_ExtiInit();
 	
-	
 
-	
-	
-	IERG3810_TIM3_Init(14399 / DAS * 10,7199);
+	//IERG3810_TIM3_Init(14399 / DAS * 10,7199);
 	//IERG3810_TIM4_Init(5000,7199);
 	
 	Delay(1000000);
 	IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
 	Delay(1000000);
 	IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
-
-	block[1][3] = 3;
-	block[2][3] = 3;
-	block[1][2] = 3;
-	block[2][2] = 3;
 	
 
-
+	/*
 	for(i = 0;i<12;i++)
 	{
 		IERG3810_TFTLCD_ShowChar(10 * (1+i),300,posx[i]+32,0xFFFF,0x0000);
@@ -168,102 +176,157 @@ int main(void)
 		IERG3810_TFTLCD_ShowChar(10 * (1+i),30,press[i]+32,0xFFFF,0x0000);
 		
 	}
+	*/
 
-
-	Playfield_init();
-  	Delay(1000000);
-	Draw_playfield();
-	Delay(1000000);
-	Draw_block();
-		
+	
+	
 		
 
 	while(1)
 	{
-		cnt++;
+	cnt++;
+
 	if(state == 0){
+		key_start = 1;
 		//For Default menu
-	}else if{state == 1}{
+		if(state_new == 0){
+			//Put the menu function here
+			//Put the menu function here
+			//Put the menu function here
+			//Put the menu function here
+			//Put the menu function here
+			//Put the menu function here
+			//Put the menu function here
+			state_new = 1;
+		}
+		if(key_select){
+			gamemode = (gamemode + 1) % 2;
+			if(gamemode == 1){
+				/*
+					for (i = 0; i < 9; i++) {
+						for (j = 27; j < 36; j++) {
+							if (button1_on[i][j]) {
+								color = switch_color(button1_on[i][j]);
+								IERG3810_Draw_DrawSquare_Menu(color, 35 + startx + j * 3, 50 +  i * 3);
+							}
+						}
+					}
+				*/
+			}else{
+				/*
+				for (i = 0; i < 9; i++) {
+					for (j = 27; j < 32; j++) { 
+						if (button2_on[i][j]) {
+							color = switch_color(button2_on[i][j]);
+							IERG3810_Draw_DrawSquare_Menu(color, 35 + startx + j * 3, 80 +  i * 3);
+						}
+					}
+				}
+				*/
+			}
+		}
+		if(key_start){
+			state = 3;	//goto counting down
+			TimerHeartBeat = 1000;
+		}
+		
+	}else if(state == 1){
+		if(game_new){
+			Bag7cnt = 0;
+			generate_7bag();
+			random_block_generator();
+			Playfield_init();
+			Delay(1000000);
+			Draw_playfield();
+			Delay(1000000);
+			Draw_Preview_init();
+			Delay(1000000);
+			Draw_block();
+			Draw_Preview();
+			game_new = 0;
+			line_count = 0;
+			if(gamemode == 1){
+				Draw_linecount_40();
+			}else{
+				Draw_linecount();
+			}
+			TimerHeartBeat = 0;
+		}
 		if(gamemode == 1){
 			//For 40 Lines
-
+			if(line_count >= 40){
+				state = 4;	//win page
+			}
+			
 		}
 		if(gamemode == 2){
 			//For Blitz
-
+			if(TimerHeartBeat >= 120000){
+				state = 5;	//Blitz end page
+			}
 		}
-		if (task1HeartBeat % 10 == 0)
+		if (task1HeartBeat % 50 == 0)
 			{
 				
 				if(block_pos_y_movement != 0){
 					tmp = Bottom_check_conv();
-					cov[9] = (tmp >> 4) & 0xF;
-					cov[10] = tmp & 0xF;
-					for(i = 9;i<11;i++)
-					{
-						IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+48,0xFFFF,0x0000);
-					}
 					Draw_update();
 
 				}
 
 				if(block_pos_x_movement_tmp != 0){
 					tmp = Shift_check();
-					cov[9] = (tmp >> 4) & 0xF;
-					cov[10] = tmp & 0xF;
-					for(i = 9;i<11;i++)
-					{
-						IERG3810_TFTLCD_ShowChar(10 * (1+i),260,cov[i]+48,0xFFFF,0x0000);
-					}
 					Draw_update();
 					
 				}
 
+				Draw_Timer();
 			}
 		
-		if(task1HeartBeat % 20 == 0){
+		if(task1HeartBeat % 200 == 0){
 					
 					task1HeartBeat = 0;
 					Draw_update();
-					//IERG3810_Draw_DrawSquare(0xFFFF, 80+(block_pos_x-block_center_x)*8, (block_pos_y-block_center_y)*8+64);
-					//IERG3810_Draw_DrawSquare(0xF81F, 80+(block_pos_x)*8, (block_pos_y)*8+64);
 		}
-	}else if{state == 2}
+	}else if(state == 2){
 		//For death page
-	}
+		//Put the death page function here
+		//Put the death page function here
+		//Put the death page function here
+		//Put the death page function here
+		//Put the death page function here
+		//Put the death page function here
+		//Put the death page function here
+		//Put the death page function here
+		//Put the death page function here
+	}else if(state == 3){
+		//counting down
+		if(TimerHeartBeat >= 4000){
+			state = 1;
+			IERG3810_TIM3_Init(14399 / DAS * 10,7199);
+			TIM3->CNT = 0;
+			continue;
+		}
+		if(TimerHeartBeat % 1000 == 0){
+			IERG3810_TFTLCD_FillRectangle(0x0000,82,75,90,140);
+			Delay(100);
+			IERG3810_TFTLCD_SevenSegment(0xFFFF,82,90,4 - TimerHeartBeat/1000);
+		}
+	}else if(state == 4){
+		//For win the 40 lines
 
-	////////////////////////For data display///////////////////
-	posx[9] = block_pos_x / 10 % 10;
-	posx[10] = block_pos_x % 10;
-	posy[9] = block_pos_y / 10 % 10;
-	posy[10] = block_pos_y % 10;
-	centx[9] = block_center_x / 10 % 10;
-	centx[10] = block_center_x % 10;
-	centy[9] = block_center_y / 10 % 10;
-	centy[10] = block_center_y % 10;
-	for(i = 9;i<11;i++)
-	{
-		IERG3810_TFTLCD_ShowChar(10 * (1+i),300,posx[i]+48,0xFFFF,0x0000);
-		IERG3810_TFTLCD_ShowChar(10 * (1+i)+120,300,posy[i]+48,0xFFFF,0x0000);
-		IERG3810_TFTLCD_ShowChar(10 * (1+i),280,centx[i]+48,0xFFFF,0x0000);
-		IERG3810_TFTLCD_ShowChar(10 * (1+i)+120,280,centy[i]+48,0xFFFF,0x0000);
+	}else if(state == 5){
+		//For time end of Blitz
+
 	}
-	////////////////////////For data display///////////////////
-	
 
 
 	//Call Joypad
-	Joypad_sendpulse();
-	Joypad_input_recog();
-	for(i = 0;i<8;i++){
-		if(!joypadkey[i]){
-			IERG3810_TFTLCD_ShowChar(10 * (1+i+4),30,i+48+1,0xFFFF,0x0000);
-		}else{
-			IERG3810_TFTLCD_ShowChar(10 * (1+i+4),30,48,0x0000,0x0000);
-		}
+
+	if(task2HeartBeat > 5){
+		Joypad_sendpulse();
+		Joypad_input_recog();
+		task2HeartBeat = 0;
 	}
-	IERG3810_TFTLCD_ShowChar(10 * 1,10,block_pos_x_movement_tmp + 1 + 48,0xFFFF	,0x0000);
-	
-	
 	}
 }

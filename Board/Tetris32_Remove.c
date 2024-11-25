@@ -5,11 +5,11 @@ void remove(void)
 {
     u16 i = 0, j = 0;
     u16 record = 0;
-		u16 k = 0;
-	  u16 sum = 0;
-    for(j = 4; j < 28; j++)
+	u16 k = 0;
+	u16 sum = 0;
+    for(j = 4; j < 24; j++)
     {
-			sum = 0;
+		sum = 0;
         for(i = 4; i < 14; i++)
         {
             if(Playfield[i][j] != 0)
@@ -34,6 +34,8 @@ void remove(void)
             }
         }
         j = record - 1; // 从消除位置重新开始
+        line_count++;
         Draw_playfield();
+        Draw_linecount_40();
     }
 }

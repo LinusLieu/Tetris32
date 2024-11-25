@@ -6,6 +6,5 @@
 
 u16 generate_random(void);
 void generate_7bag(void);
-void turn_blocks_number(u16 blocks[7]);
 
 #endif

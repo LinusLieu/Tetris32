@@ -26,13 +26,3 @@ void generate_7bag(void)
         Blocks[j] = temp;
     }
 }
-
-void turn_blocks_number(u16 blocks[7])
-{
-    u16 i = 0;
-
-    for(i = 0; i < 7; i++){
-        cnt = blocks[i];
-        random_block_generator();
-    }
-}

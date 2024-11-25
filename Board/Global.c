@@ -38,6 +38,8 @@ u16 Bag7cnt = 0;
 u16 PRE_block[4][4];
 
 u8 task1HeartBeat = 0;
+u8 task2HeartBeat = 0;
+u32 TimerHeartBeat = 0;
 
 u8 key = 0;
 u16 joypadkey[8];
@@ -47,3 +49,5 @@ u8 pressed[8] = {0,0,0,0,0,0,0,0};
 
 u8 debug = 0;
 u8 state = 1,gamemode = 0;
+u8 key_select = 0,key_start = 0;
+u8 line_count = 0;

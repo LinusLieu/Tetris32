@@ -31,8 +31,11 @@ extern u16 joypad_timer,joypad_timer_max;
 extern u16 Blocks[14];
 extern u16 Bag7cnt;
 extern u16 PRE_block[4][4];
-extern u8 task1HeartBeat;
+extern u8 task1HeartBeat,task2HeartBeat;
+extern u32 TimerHeartBeat;
 extern u8 pressed[8];
 extern u8 debug;
 extern u8 state,gamemode;
+extern u8 key_select,key_start;
+extern u8 line_count;
 #endif

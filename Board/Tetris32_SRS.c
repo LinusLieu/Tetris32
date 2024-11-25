@@ -58,13 +58,6 @@ void rotate_clockwise(void) {
     block_center_x = pos[direction];
     block_center_y = pos[(direction+1)%4];
 
-    dir[9] = direction+48;
-
-    for(i = 0;i<12;i++)
-	{
-		IERG3810_TFTLCD_ShowChar(10 * (1+i)+120,260,dir[i],0xFFFF,0x0000);
-	}
-
     for(i = 0;i<4;i++){
         for(j = 0;j<4;j++){
             rotate_block[i][j] = block[i][j];
@@ -91,12 +84,6 @@ void rotate_clockwise(void) {
         block_center_offset_x = kicktable[0][pre_direction][i][0];
         block_center_offset_y = kicktable[0][pre_direction][i][1];
         tmp_srs = Rotate_check();
-        tmp1 = tmp_srs / 10 % 10;
-        tmp2 = tmp_srs % 10;
-        IERG3810_TFTLCD_ShowChar(10,80,block_center_offset_x+48+5,0xFFFF,0x0000);
-        IERG3810_TFTLCD_ShowChar(20,80,block_center_offset_y+48+5,0xFFFF,0x0000);
-        IERG3810_TFTLCD_ShowChar(10,60,tmp1+48,0xFFFF,0x0000);
-        IERG3810_TFTLCD_ShowChar(20,60,tmp2+48,0xFFFF,0x0000);
         if(tmp_srs == 0){
             block_pos_x += block_center_offset_x;
             block_pos_y += block_center_offset_y;
@@ -175,13 +162,6 @@ void rotate_anticlockwise(void) {
     block_center_x = pos[direction];
     block_center_y = pos[(direction+1)%4];
 
-    dir[9] = direction+48;
-
-    for(i = 0;i<12;i++)
-	{
-		IERG3810_TFTLCD_ShowChar(10 * (1+i)+120,260,dir[i],0xFFFF,0x0000);
-	}
-
     for(i = 0;i<4;i++){
         for(j = 0;j<4;j++){
             rotate_block[i][j] = block[i][j];
@@ -208,12 +188,6 @@ void rotate_anticlockwise(void) {
         block_center_offset_x = kicktable[1][pre_direction][i][0];
         block_center_offset_y = kicktable[1][pre_direction][i][1];
         tmp_srs = Rotate_check();
-        tmp1 = tmp_srs / 10 % 10;
-        tmp2 = tmp_srs % 10;
-        IERG3810_TFTLCD_ShowChar(10,80,block_center_offset_x+48+5,0xFFFF,0x0000);
-        IERG3810_TFTLCD_ShowChar(20,80,block_center_offset_y+48+5,0xFFFF,0x0000);
-        IERG3810_TFTLCD_ShowChar(10,60,tmp1+48,0xFFFF,0x0000);
-        IERG3810_TFTLCD_ShowChar(20,60,tmp2+48,0xFFFF,0x0000);
         if(tmp_srs == 0){
             block_pos_x += block_center_offset_x;
             block_pos_y += block_center_offset_y;
