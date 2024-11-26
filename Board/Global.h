@@ -38,4 +38,6 @@ extern u8 debug;
 extern u8 state,gamemode;
 extern u8 key_select,key_start;
 extern u8 line_count;
+extern u8 help;
+extern u32 score;
 #endif

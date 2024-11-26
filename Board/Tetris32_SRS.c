@@ -103,6 +103,7 @@ void rotate_clockwise(void) {
             return;
         }
         Draw_playfield();   
+        Draw_update();
         return;
 }
 
@@ -207,6 +208,7 @@ void rotate_anticlockwise(void) {
             return;
         }
         Draw_playfield();   
+        Draw_update();
         return;
     
 }

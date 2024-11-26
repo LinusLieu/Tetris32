@@ -51,3 +51,5 @@ u8 debug = 0;
 u8 state = 1,gamemode = 0;
 u8 key_select = 0,key_start = 0;
 u8 line_count = 0;
+u8 help = 0;
+u32 score = 0;

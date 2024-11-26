@@ -36,6 +36,10 @@ void remove(void)
         j = record - 1; // 从消除位置重新开始
         line_count++;
         Draw_playfield();
-        Draw_linecount_40();
+        if(gamemode == 1){
+			Draw_linecount_40();
+		}else{
+			Draw_linecount();
+		}
     }
 }

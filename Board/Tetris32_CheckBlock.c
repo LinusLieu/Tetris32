@@ -36,7 +36,7 @@ int Bottom_check_conv(void)
         }
     }
     if(conv){
-        if(block_pos_y == 18){
+        if(block_pos_y >= 18){
             state = 2;
             return conv;
         }

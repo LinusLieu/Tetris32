@@ -82,9 +82,7 @@ void Joypad_input_recog(void){
                 state = 0;
             }
         }
-    }
-
-    if(state == 1){
+    }else if(state == 1){
         //Key 7 for moving left
         if(!joypadkey[6]){
             if(pressed[6] == 0){
@@ -194,7 +192,7 @@ void Joypad_input_recog(void){
             }
             
         }
-    }
+    }else
     
 
     //At menu page
@@ -225,7 +223,6 @@ void Joypad_input_recog(void){
             
         }
     }
-    
    
 }
 
