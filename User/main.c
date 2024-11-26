@@ -296,7 +296,7 @@ int main(void)
 		}
 		if(TimerHeartBeat % 1000 == 0){
 			IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
-			Delay(1000000);
+			Delay(100000);
 			//IERG3810_TFTLCD_FillRectangle(0x0000,82,75,90,140);
 			Delay(100);
 			IERG3810_TFTLCD_SevenSegment(0xFFFF,82,90,4 - TimerHeartBeat/1000);
