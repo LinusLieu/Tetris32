@@ -21,4 +21,9 @@ void Draw_Tetris_Letters(void);
 void Draw_Menu_Arror(u8 light,u8 mode);
 void Draw_help_page(void);
 void Draw_name_page(void);
+void Draw_end_40line(void);
+void Draw_end_Blitz(void);
+void Draw_deathpage(void);
+void Draw_40line(void);
+void Draw_blitz(void);
 #endif

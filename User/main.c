@@ -13,19 +13,6 @@
 #include "Tetris32_Timer.h"
 #include "Tetris32_Preview.h"
 
-//include the head file of menu and death page here
-//include the head file of menu and death page here
-//include the head file of menu and death page here
-//include the head file of menu and death page here
-//include the head file of menu and death page here
-//include the head file of menu and death page here
-//include the head file of menu and death page here
-//include the head file of menu and death page here
-//include the head file of menu and death page here
-//include the head file of menu and death page here
-
-
-
 /*colors
 Z:red��0XF800
 L:orange��	0XFD20
@@ -115,11 +102,11 @@ void EXTI15_10_IRQHandler(void)
 int main(void)
 {
 	int i = 0, j = 0;
-	u8 tmp,tmp2,tmp3 = 0;
+	u8 tmp = 0,tmp2 = 0,tmp3 = 0;
 	u8 playstate = 0;
-	
 	u8 state_new = 0,game_new = 1;
 	u8 arror_light = 1;
+	
 	direction = 0;
 	DAS = 20;
 	block_generate_pos_x = 4;
@@ -154,8 +141,6 @@ int main(void)
 	Delay(1000000);
 	IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
 	Delay(1000000);
-	Draw_name_page();
-	Delay(30000000);
 	IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
 
 	while(1)
@@ -173,23 +158,25 @@ int main(void)
 			state = 0;
 		}
 		if(key_select){
-			gamemode = (gamemode + 1) % 3;
+			gamemode = (gamemode + 1) % 4;
 			Draw_Menu_Arror(1,gamemode);
 			key_select = 0;
 		}
 		if(key_start){
-			if(gamemode != 2){
-				key_start = 0;
-				state = 3;	//goto counting down
-				Delay(1000000);
-				IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
-				Delay(1000000);
-				TimerHeartBeat = 1000;
-				arror_light = 0;
-				IERG3810_DS1(arror_light);
-			}else{
+			if(gamemode == 2){
 				key_start = 0;
 				state = 6;
+			}else if(gamemode == 3){
+				key_start = 0;
+				state = 7;
+			}else{
+				key_start = 0;
+				state = 3;	//goto counting down
+				arror_light = 0;
+				IERG3810_DS1(0);
+				IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
+				Delay(2000000);
+				TimerHeartBeat = 1000;
 			}
 			state_new = 0;
 			
@@ -200,20 +187,39 @@ int main(void)
 			task1HeartBeat = 0;
 			IERG3810_DS1(arror_light);
 		}
-		if(help){
-			state = 6;
-			help = 0;
-			state_new = 0;
-		}
+		
 
 
 		
 	}else if(state == 1){
 		if(game_new){
+			IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
+			Delay(1000000);
+			Playfield_init();
+			DAS_Timer = 0;
+			ARR_Timer = 0;
+			autoDrop = 0;
+			direction = 0;
+			block_center_x = 1;
+			block_center_y = 2;
+			block_pos_x = block_generate_pos_x;
+			block_pos_y = block_generate_pos_y;
+			block_pos_x_movement = 0;
+			block_pos_y_movement = 0;
+			block_pos_x_pre = 0;
+			block_pos_y_pre = 0;
+			block_pos_x_movement_tmp = 0;
+			block_pos_y_movement_tmp = 0;;
+			block_center_offset_x=0;
+			block_center_offset_y=0;
+			cnt = 0;
+			key = 0;
+			line_count = 0;
+			help = 0;
+			score = 0;
 			Bag7cnt = 0;
 			generate_7bag();
 			random_block_generator();
-			Playfield_init();
 			Delay(1000000);
 			Draw_playfield();
 			Delay(1000000);
@@ -225,8 +231,10 @@ int main(void)
 			line_count = 0;
 			if(gamemode == 1){
 				Draw_linecount_40();
+				Draw_40line();
 			}else{
 				Draw_linecount();
+				Draw_blitz();
 			}
 			TimerHeartBeat = 0;
 		}
@@ -274,7 +282,9 @@ int main(void)
 			Draw_deathpage();
 			game_new = 1;
 			state_new = 0;
+			gamemode = 0;
 			tmp2 = 1;
+			cnt = cnt / 7;
 		}
 	}else if(state == 3){
 		//counting down
@@ -285,7 +295,9 @@ int main(void)
 			continue;
 		}
 		if(TimerHeartBeat % 1000 == 0){
-			IERG3810_TFTLCD_FillRectangle(0x0000,82,75,90,140);
+			IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
+			Delay(1000000);
+			//IERG3810_TFTLCD_FillRectangle(0x0000,82,75,90,140);
 			Delay(100);
 			IERG3810_TFTLCD_SevenSegment(0xFFFF,82,90,4 - TimerHeartBeat/1000);
 		}
@@ -293,6 +305,9 @@ int main(void)
 		//For win the 40 lines
 		if(tmp2 == 0){
 			Draw_end_40line();
+			game_new = 1;
+			state_new = 0;
+			gamemode = 0;
 			tmp2 = 1;
 		}
 		
@@ -300,6 +315,9 @@ int main(void)
 		//For time end of Blitz
 		if(tmp2 == 0){
 			Draw_end_Blitz();
+			game_new = 1;
+			state_new = 0;
+			gamemode = 0;
 			tmp2 = 1;
 		}
 
@@ -308,6 +326,14 @@ int main(void)
 		IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
 		Delay(1000000);
 		Draw_help_page();
+		Delay(30000000);
+		state = 0;
+		help = 0;
+	}else if(state == 7){
+		//Help page
+		IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
+		Delay(1000000);
+		Draw_name_page();
 		Delay(30000000);
 		state = 0;
 		help = 0;

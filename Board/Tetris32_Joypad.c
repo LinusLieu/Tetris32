@@ -75,14 +75,7 @@ void Joypad_input_recog(void){
     }
     IERG3810_DS1(LED_temp);
     
-    //At death or end page
-    if(state == 2 || state == 4 || state == 5){
-        for(i = 0;i<7;i++){
-            if(!joypadkey[i]){
-                state = 0;
-            }
-        }
-    }else if(state == 1){
+    if(state == 1){//At game page
         //Key 7 for moving left
         if(!joypadkey[6]){
             if(pressed[6] == 0){
