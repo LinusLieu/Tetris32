@@ -1,7 +1,8 @@
 #include "stm32f10x.h"
 #include "IERG3810_KEY.h"
+#include "global.h"
 
-// put your procedure and code here
+//Init setting for Key 1,2,4 and UP
 void IERG3810_KEY_Init(void){
 	RCC->APB2ENR |= 0x00000044;	//ENABLE APB2 A,E CLOCK
 	

@@ -1,7 +1,6 @@
 *.uvprojx
 *.uvoptx
-*.uvguix.Leona
-*.uvguix.Linus_Lieu
+*.uvguix.*
 /RTE
 /Objects
 /Listings
