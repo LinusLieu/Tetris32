@@ -17,7 +17,11 @@ void random_block_generator(void)
 		Bag7cnt = 0;
 		generate_7bag();
 	}
-
+    if(temp == 2){
+        iso = 1;
+    }else{
+        iso = 0;
+    }
     
     switch (temp)
     {
@@ -36,7 +40,6 @@ void random_block_generator(void)
         }
         break;
         case 2 :
-        iso = 1;
         for(i = 0;i<4;i++){
             for(j = 0; j < 4; j++){
                 block[j][i] = O[i][j];

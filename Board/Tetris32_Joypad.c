@@ -61,11 +61,28 @@ void Joypad_input_recog(void){
     u8 i;
     u8 LED_temp = 0;
     u8 tmp;
+    u16 tmp2;
 
     //Key 7 for right
     //Key 6 for left
     //key 5 for down
     //key 4 for up
+
+
+    if(state == 2 || state == 4 || state == 5){
+        if(temp == 0){
+            tmp2 = TimerHeartBeat;
+            temp = 1;
+        }
+        for(i = 0;i<7;i++){
+            if(!joypadkey[i]){
+                if(TimerHeartBeat > tmp2 + 1000){
+                    state = 0;
+                }
+                
+            }
+        }
+    }
 
 
     //To show if there has any key been pressed though DS1

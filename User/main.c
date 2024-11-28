@@ -12,6 +12,7 @@
 #include "Tetris32_Joypad.h"
 #include "Tetris32_Timer.h"
 #include "Tetris32_Preview.h"
+#include "IERG3810_USART.h"
 
 /*colors
 Z:red��0XF800
@@ -129,6 +130,7 @@ int main(void)
 	IERG3810_key2_ExtiInit();
 	IERG3810_keyUP_ExtiInit();
 	IERG3810_LED_Init();
+	IERG3810_USART2_init(36,9600);
 	
 	Joypad_init();
 	Joypad_Latch_ExtiInit();
@@ -145,6 +147,8 @@ int main(void)
 
 	while(1)
 	{
+	//IERG3810_TFTLCD_ShowChar(0,300,state + 48,0xFFFF,0x0000);
+	//IERG3810_TFTLCD_ShowChar(10,300,tmp2 + 48,0xFFFF,0x0000);
 	cnt++;
 	if(state == 0){
 		//For Default menu
@@ -153,6 +157,13 @@ int main(void)
 			Delay(1000000);
 			Draw_Tetris_Letters();
 			Draw_Menu_Arror(1,gamemode);
+			for(i = 4; i < 14; i++)
+			{
+				for(j = 4; j < 24; j++)
+				{
+					Playfield[i][j] = 0;
+				}
+			}
 			state_new = 1;
 			key_start = 0;
 			state = 0;
@@ -163,6 +174,8 @@ int main(void)
 			key_select = 0;
 		}
 		if(key_start){
+			tmp2 = 0;
+			USART_print(2,"Gamestart!");
 			if(gamemode == 2){
 				key_start = 0;
 				state = 6;
@@ -179,6 +192,7 @@ int main(void)
 				TimerHeartBeat = 1000;
 			}
 			state_new = 0;
+			game_new = 1;
 			
 		}
 		if(task1HeartBeat > 200){
@@ -196,6 +210,7 @@ int main(void)
 			IERG3810_TFTLCD_FillRectangle(0x0000,0,240,0,320);
 			Delay(1000000);
 			Playfield_init();
+			tmp2 = 0;
 			DAS_Timer = 0;
 			ARR_Timer = 0;
 			autoDrop = 0;
@@ -232,9 +247,11 @@ int main(void)
 			if(gamemode == 1){
 				Draw_linecount_40();
 				Draw_40line();
+				USART_print(2,"You choosed 40line mode.");
 			}else{
 				Draw_linecount();
 				Draw_blitz();
+				USART_print(2,"You choosed Blitz mode.");
 			}
 			TimerHeartBeat = 0;
 		}
@@ -279,12 +296,14 @@ int main(void)
 	}else if(state == 2){
 		//For death page
 		if(tmp2 == 0){
+			USART_print(2,"You are dead!");
 			Draw_deathpage();
 			game_new = 1;
 			state_new = 0;
 			gamemode = 0;
 			tmp2 = 1;
 			cnt = cnt / 7;
+			temp = 0;
 		}
 	}else if(state == 3){
 		//counting down
@@ -304,6 +323,7 @@ int main(void)
 	}else if(state == 4){
 		//For win the 40 lines
 		if(tmp2 == 0){
+			USART_print(2,"You win!");
 			Draw_end_40line();
 			game_new = 1;
 			state_new = 0;
@@ -314,6 +334,7 @@ int main(void)
 	}else if(state == 5){
 		//For time end of Blitz
 		if(tmp2 == 0){
+			USART_print(2,"Oh no... Time is up.");
 			Draw_end_Blitz();
 			game_new = 1;
 			state_new = 0;
